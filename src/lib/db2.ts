@@ -143,54 +143,50 @@ export async function initDb(): Promise<void> {
     const p = getPool();
     console.log('--- Initializing MySQL Database ---');
 
-    // 1. Initial Table Creation (Safe)
+    // 1. Initial Table Creation
     for (const stmt of SCHEMA_STATEMENTS.slice(0, 6)) {
       await p.query(stmt);
     }
 
-    // 2. Column Migrations (Silent Fail if exists)
+    // 2. Column Migrations
     for (const stmt of SCHEMA_STATEMENTS.slice(6)) {
       await p.query(stmt).catch(() => null);
     }
 
-    // 3. Seeds
-    const [users] = await p.query('SELECT COUNT(*) as count FROM users');
-    if ((users as any)[0].count === 0) {
-      console.log('Seeding initial data...');
-      await seedData();
-      console.log('Seeding complete.');
+    // 3. Granular Seeding
+    const [uCount]: any = await p.query('SELECT COUNT(*) as c FROM users');
+    if (uCount[0].c === 0) {
+      console.log('Seeding Users...');
+      await p.query(`INSERT INTO users (name,username,email,timezone) VALUES ('Admin','alex','admin@cal.com','America/New_York')`);
     }
+
+    const [eCount]: any = await p.query('SELECT COUNT(*) as c FROM event_types');
+    if (eCount[0].c === 0) {
+      console.log('Seeding Event Types...');
+      const events = [
+        ['15 Minute Meeting', '15min', 'Quick sync call.', 15, 'Google Meet', '#6366f1', 5, '[]'],
+        ['30 Minute Meeting', '30min', 'Standard meeting.', 30, 'Google Meet', '#8b5cf6', 10, '[]'],
+        ['1 Hour Deep Dive', '1hour', 'Comprehensive session.', 60, 'Zoom', '#ec4899', 15, '[]'],
+        ['Product Demo', 'product-demo', 'See our product in action.', 45, 'Google Meet', '#f59e0b', 10, '[]']
+      ];
+      for (const e of events) {
+        await p.query(`INSERT INTO event_types (user_id,title,slug,description,duration,location,color,buffer_time,custom_questions) VALUES (1,?,?,?,?,?,?,?,?)`, e);
+      }
+    }
+
+    const [aCount]: any = await p.query('SELECT COUNT(*) as c FROM availability');
+    if (aCount[0].c === 0) {
+      console.log('Seeding Availability...');
+      const [availRes]: any = await p.query(`INSERT INTO availability (user_id,name,timezone,is_default) VALUES (1,'Working Hours','America/New_York',1)`);
+      const aid = availRes.insertId;
+      const days = [[aid, 0, 0], [aid, 1, 1], [aid, 2, 1], [aid, 3, 1], [aid, 4, 1], [aid, 5, 1], [aid, 6, 0]];
+      for (const d of days) {
+        await p.query(`INSERT INTO availability_days (availability_id,day_of_week,is_enabled,start_time,end_time) VALUES (?,?,?, '09:00', '17:00')`, d);
+      }
+    }
+
     console.log('--- MySQL Database Ready ---');
   } catch (error) {
     console.error('MySQL initialization failed:', error);
-  }
-}
-
-async function seedData() {
-  const p = getPool();
-
-  // Default Admin
-  await p.query(`INSERT INTO users (name,username,email,timezone) VALUES ('Admin','alex','admin@cal.com','America/New_York')`);
-
-  // Event Types
-  const events = [
-    ['15 Minute Meeting', '15min', 'Quick sync call.', 15, 'Google Meet', '#6366f1', 5, '[]'],
-    ['30 Minute Meeting', '30min', 'Standard meeting.', 30, 'Google Meet', '#8b5cf6', 10, '[]'],
-    ['1 Hour Deep Dive', '1hour', 'Comprehensive session.', 60, 'Zoom', '#ec4899', 15, '[]'],
-    ['Product Demo', 'product-demo', 'See our product in action.', 45, 'Google Meet', '#f59e0b', 10, '[]']
-  ];
-  for (const e of events) {
-    await p.query(`INSERT INTO event_types (user_id,title,slug,description,duration,location,color,buffer_time,custom_questions) VALUES (1,?,?,?,?,?,?,?,?)`, e);
-  }
-
-  // Availability
-  const [availRes]: any = await p.query(`INSERT INTO availability (user_id,name,timezone,is_default) VALUES (1,'Working Hours','America/New_York',1)`);
-  const aid = availRes.insertId;
-
-  const days = [
-    [aid, 0, 0], [aid, 1, 1], [aid, 2, 1], [aid, 3, 1], [aid, 4, 1], [aid, 5, 1], [aid, 6, 0]
-  ];
-  for (const d of days) {
-    await p.query(`INSERT INTO availability_days (availability_id,day_of_week,is_enabled,start_time,end_time) VALUES (?,?,?, '09:00', '17:00')`, d);
   }
 }

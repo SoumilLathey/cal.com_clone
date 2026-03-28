@@ -133,9 +133,10 @@ export default function AvailabilityPage() {
   }
 
   function getSummary(avail: Availability) {
-    const enabled = avail.days.filter(d => d.is_enabled);
+    if (!avail.days || !Array.isArray(avail.days)) return 'No availability';
+    const enabled = avail.days.filter(d => Boolean(d.is_enabled));
     if (enabled.length === 0) return 'No availability';
-    if (enabled.length === 5 && !avail.days[0].is_enabled && !avail.days[6].is_enabled) {
+    if (enabled.length === 5 && avail.days[1] && !avail.days[0].is_enabled && !avail.days[6].is_enabled) {
       const s = formatTime12(avail.days[1].start_time).toUpperCase();
       const e = formatTime12(avail.days[1].end_time).toUpperCase();
       return `Mon - Fri, ${s} - ${e}`;
