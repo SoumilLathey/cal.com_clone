@@ -15,7 +15,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Production DB initialization - safe to run multiple times
+  // Fresh MySQL production build trigger
   initDb().catch(console.error);
 
   return (
