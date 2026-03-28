@@ -33,24 +33,8 @@ export async function POST(req: NextRequest) {
   if (isNaN(newStart) || isNaN(newEnd) || newEnd <= newStart)
     return NextResponse.json({ error: 'Invalid time range' }, { status: 400 });
 
-  // ── Conflict check: fetch ALL active bookings for this user ────────────────
-  // Compare using getTime() to be immune to ISO format differences (Z vs no-Z, etc.)
-  const allActive = await dbAll<{ id: number; start_time: string; end_time: string; uid: string }>(
-    `SELECT id, start_time, end_time, uid FROM bookings
-     WHERE user_id = 1 AND status != 'cancelled'`
-  );
-
-  // If rescheduling, exclude the booking being replaced from the conflict check
-  const activeToCheck = rescheduled_from
-    ? allActive.filter(b => b.uid !== rescheduled_from)
-    : allActive;
-
-  const conflict = activeToCheck.find(b => {
-    const bs = new Date(b.start_time).getTime();
-    const be = new Date(b.end_time).getTime();
-    // Overlap: newStart < bookedEnd AND newEnd > bookedStart
-    return newStart < be && newEnd > bs;
-  });
+  // ── Conflict check: Use SQL directly for maximum speed ────────────────
+  const conflict = await dbGet('SELECT id FROM bookings WHERE user_id = 1 AND status != "cancelled" AND start_time < ? AND end_time > ? LIMIT 1', [end_time, start_time]);
 
   if (conflict) {
     return NextResponse.json(
@@ -85,7 +69,7 @@ export async function POST(req: NextRequest) {
 
   if (!booking) return NextResponse.json({ error: 'Booking failed' }, { status: 500 });
 
-  // ── Send confirmation emails ───────────────────────────────────────────────
+  // ── Send confirmation emails in back-end (Don't await to speed up UI) ───────
   const emailData = {
     bookerName: booking.booker_name, bookerEmail: booking.booker_email,
     eventTitle: booking.event_title, eventLocation: booking.location,
@@ -93,30 +77,20 @@ export async function POST(req: NextRequest) {
   };
   const subject = `✅ ${rescheduled_from ? 'Rescheduled' : 'Confirmed'}: ${booking.event_title}`;
 
-  // Important: We MUST await these on Vercel/Serverless so the function doesn't kill the process
-  const emailPromises = [];
-
-  // 1. Send to booker
-  emailPromises.push(
-    sendEmail({ to: booker_email, subject, html: buildConfirmationEmail(emailData) })
-  );
-
-  // 2. Send to admin
-  const adminEmail = process.env.ADMIN_EMAIL || req.cookies.get('notification_email')?.value || '';
-  if (adminEmail && adminEmail !== booker_email) {
-    emailPromises.push(
-      sendEmail({
+  // Start the email process but don't hold the user back
+  (async () => {
+    const emailPromises = [];
+    emailPromises.push(sendEmail({ to: booker_email, subject, html: buildConfirmationEmail(emailData) }));
+    const adminEmail = process.env.ADMIN_EMAIL || '';
+    if (adminEmail && adminEmail !== booker_email) {
+      emailPromises.push(sendEmail({
         to: adminEmail,
-        subject: `📅 ${rescheduled_from ? 'Rescheduled' : 'New booking'}: ${booking.event_title} with ${booker_name}`,
+        subject: `📅 New booking: ${booking.event_title} with ${booker_name}`,
         html: buildAdminNotificationEmail(emailData, 'confirmation'),
-      })
-    );
-  }
-
-  // Wait for all emails to send before responding
-  await Promise.all(emailPromises).catch(err => {
-    console.error('[Email Failure]:', err);
-  });
+      }));
+    }
+    await Promise.all(emailPromises).catch(console.error);
+  })();
 
   return NextResponse.json(booking, { status: 201 });
 }
