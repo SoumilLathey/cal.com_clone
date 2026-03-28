@@ -131,15 +131,23 @@ const SCHEMA_STATEMENTS = [
 ];
 
 export async function initDb(): Promise<void> {
-  const p = getPool();
-  for (const stmt of SCHEMA_STATEMENTS) {
-    await p.query(stmt);
-  }
+  try {
+    const p = getPool();
+    console.log('--- Initializing MySQL Database ---');
+    for (const stmt of SCHEMA_STATEMENTS) {
+      await p.query(stmt);
+    }
 
-  // Seeds
-  const [users] = await p.query('SELECT COUNT(*) as count FROM users');
-  if ((users as any)[0].count === 0) {
-    await seedData();
+    // Seeds
+    const [users] = await p.query('SELECT COUNT(*) as count FROM users');
+    if ((users as any)[0].count === 0) {
+      console.log('Seeding initial data...');
+      await seedData();
+      console.log('Seeding complete.');
+    }
+    console.log('--- MySQL Database Ready ---');
+  } catch (error) {
+    console.error('MySQL initialization failed:', error);
   }
 }
 
