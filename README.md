@@ -37,6 +37,8 @@ A full-featured scheduling and booking web application that closely replicates C
 - ✅ Color-coded event types
 - ✅ Copy booking link to clipboard
 - ✅ Stats dashboard with booking counts
+- ✅ Email notifications (Gmail via Nodemailer)
+- ✅ Custom login / User identification
 
 ---
 
@@ -48,6 +50,7 @@ A full-featured scheduling and booking web application that closely replicates C
 | **Frontend** | React 19, Vanilla CSS (custom design system) |
 | **Backend** | Next.js API Routes (Route Handlers) |
 | **Database** | SQLite via `better-sqlite3` (embedded, zero-config) |
+| **Email** | Nodemailer (Gmail App Password integration) |
 | **Fonts** | Inter (Google Fonts) |
 | **Icons** | Inline SVGs (no external library) |
 
@@ -200,10 +203,10 @@ The application closely replicates Cal.com's design language:
 
 ## ⚙️ Assumptions
 
-1. **Single default user**: The system assumes a single pre-logged-in user ("Alex Johnson"). No authentication is implemented — the dashboard shows admin views directly.
+1. **Flexible User Identification**: The system allows signing in as a default "Admin" or with a custom email to receive booking notifications.
 2. **Server-side SQLite**: `better-sqlite3` runs synchronously in Node.js API routes. This works great in development and single-instance deployments.
 3. **Timezone display only**: Timezone is stored and displayed but not used to convert UTC slot times yet (slots are local server time).
-4. **No email notifications**: Booking confirmation emails are out of scope; a confirmation page is shown instead.
+4. **Email notifications**: Automatic booking confirmation and admin notification emails are sent using Gmail via Nodemailer.
 5. **Date seeding**: Sample booking dates are seeded relative to the current date at first run.
 
 ---
