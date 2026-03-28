@@ -4,6 +4,9 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Schedulo – The better way to schedule your meetings",
   description: "A fully customizable scheduling platform for individuals and businesses. Create event types, set availability, and let others book time with you.",
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 export default function RootLayout({

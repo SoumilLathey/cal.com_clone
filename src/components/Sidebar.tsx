@@ -5,14 +5,14 @@ import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 
 const navItems = [
-  { href: '/dashboard', label: 'Event Types', icon: <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M2 4h12M2 8h12M2 12h8"/></svg> },
-  { href: '/dashboard/bookings', label: 'Bookings', icon: <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="2" y="2" width="12" height="13" rx="1.5"/><path d="M5 1v2M11 1v2M2 6h12"/></svg> },
-  { href: '/dashboard/availability', label: 'Availability', icon: <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg> },
+  { href: '/dashboard', label: 'Event Types', icon: <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M2 4h12M2 8h12M2 12h8" /></svg> },
+  { href: '/dashboard/bookings', label: 'Bookings', icon: <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="2" y="2" width="12" height="13" rx="1.5" /><path d="M5 1v2M11 1v2M2 6h12" /></svg> },
+  { href: '/dashboard/availability', label: 'Availability', icon: <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="8" cy="8" r="6" /><path d="M8 5v3l2 2" /></svg> },
 ];
 
 const accountItems = [
-  { href: '/dashboard/settings', label: 'Settings', icon: <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.2 3.2l1.4 1.4M11.4 11.4l1.4 1.4M3.2 12.8l1.4-1.4M11.4 4.6l1.4-1.4"/></svg> },
-  { href: '/alex', label: 'My Public Page', external: true, icon: <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="8" cy="6" r="3"/><path d="M2 13a6 6 0 0112 0"/></svg> },
+  { href: '/dashboard/settings', label: 'Settings', icon: <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="8" cy="8" r="2.5" /><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.2 3.2l1.4 1.4M11.4 11.4l1.4 1.4M3.2 12.8l1.4-1.4M11.4 4.6l1.4-1.4" /></svg> },
+  { href: '/alex', label: 'My Public Page', external: true, icon: <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="8" cy="6" r="3" /><path d="M2 13a6 6 0 0112 0" /></svg> },
 ];
 
 interface SidebarProps {
@@ -48,8 +48,8 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       <aside className={sidebarClass}>
         <Link href="/" className="sidebar-logo">
           <svg width="26" height="26" viewBox="0 0 28 28" fill="none">
-            <rect width="28" height="28" rx="7" fill="#111827"/>
-            <path d="M8 14h12M8 9h12M8 19h7" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+            <rect width="28" height="28" rx="7" fill="#111827" />
+            <path d="M8 14h12M8 9h12M8 19h7" stroke="white" strokeWidth="2" strokeLinecap="round" />
           </svg>
           <span>Schedulo</span>
         </Link>
@@ -84,7 +84,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                 {item.label}
                 {item.external && (
                   <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" style={{ marginLeft: 'auto', width: 12, height: 12 }}>
-                    <path d="M6 2H2v12h12v-4M9 2h5v5M14 2l-7 7"/>
+                    <path d="M6 2H2v12h12v-4M9 2h5v5M14 2l-7 7" />
                   </svg>
                 )}
               </Link>
@@ -114,7 +114,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
               }}
             >
               {copied ? '✓ Copied!' : (
-                <><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="5" y="5" width="9" height="9" rx="1.5"/><path d="M2 11V2h9"/></svg>Copy link</>
+                <><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="5" y="5" width="9" height="9" rx="1.5" /><path d="M2 11V2h9" /></svg>Copy link</>
               )}
             </button>
           </div>
@@ -127,7 +127,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
               <div className="user-name">Alex Johnson</div>
               <div className="user-email" style={{ fontSize: 10 }}>{notifEmail}</div>
             </div>
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#9ca3af" strokeWidth="1.5"><path d="M6 4l4 4-4 4"/></svg>
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#9ca3af" strokeWidth="1.5"><path d="M6 4l4 4-4 4" /></svg>
           </Link>
         </div>
       </aside>

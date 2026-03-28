@@ -3,30 +3,57 @@ import { dbGet, dbAll, dbRun, initDb } from '@/lib/db2';
 
 export async function GET() {
   await initDb();
-  const availability = await dbGet<{ id: number; name: string; timezone: string }>(
-    'SELECT * FROM availability WHERE user_id = 1 AND is_default = 1'
+  const availabilities = await dbAll<{ id: number; name: string; timezone: string; is_default: number }>(
+    'SELECT * FROM availability WHERE user_id = 1 ORDER BY is_default DESC, id DESC'
   );
-  if (!availability) return NextResponse.json({ error: 'No availability found' }, { status: 404 });
 
-  const days = await dbAll(
-    'SELECT * FROM availability_days WHERE availability_id = ? ORDER BY day_of_week',
-    [availability.id]
+  const results = [];
+  for (const avail of availabilities) {
+    const days = await dbAll(
+      'SELECT * FROM availability_days WHERE availability_id = ? ORDER BY day_of_week',
+      [avail.id]
+    );
+    results.push({ ...avail, days });
+  }
+
+  return NextResponse.json(results);
+}
+
+export async function POST(req: NextRequest) {
+  await initDb();
+  const { name } = await req.json();
+
+  const res = await dbRun(
+    'INSERT INTO availability (user_id, name, timezone, is_default) VALUES (1, ?, ?, 0)',
+    [name || 'New Schedule', 'America/New_York']
   );
-  return NextResponse.json({ ...availability, days });
+
+  const aid = res.lastInsertRowid!;
+
+  // Create 7 default days
+  for (let i = 0; i < 7; i++) {
+    const isEn = (i >= 1 && i <= 5) ? 1 : 0;
+    await dbRun(
+      'INSERT INTO availability_days (availability_id, day_of_week, is_enabled, start_time, end_time) VALUES (?, ?, ?, ?, ?)',
+      [aid, i, isEn, '09:00', '17:00']
+    );
+  }
+
+  return NextResponse.json({ id: aid, name, success: true });
 }
 
 export async function PUT(req: NextRequest) {
   await initDb();
   const body = await req.json();
-  const { timezone, days } = body;
+  const { id, timezone, days, name } = body;
 
-  const avail = await dbGet<{ id: number }>(
-    'SELECT * FROM availability WHERE user_id = 1 AND is_default = 1'
-  );
-  if (!avail) return NextResponse.json({ error: 'Not found' }, { status: 404 });
+  if (!id) return NextResponse.json({ error: 'ID required' }, { status: 400 });
 
   if (timezone) {
-    await dbRun('UPDATE availability SET timezone = ? WHERE id = ?', [timezone, avail.id]);
+    await dbRun('UPDATE availability SET timezone = ? WHERE id = ?', [timezone, id]);
+  }
+  if (name) {
+    await dbRun('UPDATE availability SET name = ? WHERE id = ?', [name, id]);
   }
 
   if (days && Array.isArray(days)) {
@@ -34,15 +61,10 @@ export async function PUT(req: NextRequest) {
       await dbRun(
         `UPDATE availability_days SET is_enabled = ?, start_time = ?, end_time = ?
          WHERE availability_id = ? AND day_of_week = ?`,
-        [day.is_enabled ? 1 : 0, day.start_time, day.end_time, avail.id, day.day_of_week]
+        [day.is_enabled ? 1 : 0, day.start_time, day.end_time, id, day.day_of_week]
       );
     }
   }
 
-  const updated = await dbGet('SELECT * FROM availability WHERE id = ?', [avail.id]);
-  const updatedDays = await dbAll(
-    'SELECT * FROM availability_days WHERE availability_id = ? ORDER BY day_of_week',
-    [avail.id]
-  );
-  return NextResponse.json({ ...updated, days: updatedDays });
+  return NextResponse.json({ success: true });
 }
