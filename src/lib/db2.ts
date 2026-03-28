@@ -135,7 +135,12 @@ const SCHEMA_STATEMENTS = [
   `ALTER TABLE event_types ADD COLUMN custom_questions TEXT`,
   `ALTER TABLE bookings ADD COLUMN answers TEXT`,
   `ALTER TABLE bookings ADD COLUMN rescheduled_from VARCHAR(255)`,
-  `ALTER TABLE availability ADD COLUMN is_default TINYINT(1) NOT NULL DEFAULT 0`
+  `ALTER TABLE availability ADD COLUMN is_default TINYINT(1) NOT NULL DEFAULT 0`,
+  // Force correct column sizes in case of earlier botched deployments
+  `ALTER TABLE bookings MODIFY COLUMN status VARCHAR(255) NOT NULL DEFAULT 'upcoming'`,
+  `ALTER TABLE bookings MODIFY COLUMN notes TEXT`,
+  `ALTER TABLE bookings MODIFY COLUMN answers TEXT`,
+  `ALTER TABLE bookings MODIFY COLUMN rescheduled_from VARCHAR(255)`
 ];
 
 export async function initDb(): Promise<void> {
