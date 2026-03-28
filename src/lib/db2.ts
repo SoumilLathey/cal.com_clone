@@ -129,18 +129,31 @@ const SCHEMA_STATEMENTS = [
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     INDEX (event_type_id),
     INDEX (user_id)
-  )`
+  )`,
+  // ─── Migrations ───────────────────────────────────────────────────────────
+  `ALTER TABLE event_types ADD COLUMN buffer_time INT NOT NULL DEFAULT 0`,
+  `ALTER TABLE event_types ADD COLUMN custom_questions TEXT`,
+  `ALTER TABLE bookings ADD COLUMN answers TEXT`,
+  `ALTER TABLE bookings ADD COLUMN rescheduled_from VARCHAR(255)`,
+  `ALTER TABLE availability ADD COLUMN is_default TINYINT(1) NOT NULL DEFAULT 0`
 ];
 
 export async function initDb(): Promise<void> {
   try {
     const p = getPool();
     console.log('--- Initializing MySQL Database ---');
-    for (const stmt of SCHEMA_STATEMENTS) {
+
+    // 1. Initial Table Creation (Safe)
+    for (const stmt of SCHEMA_STATEMENTS.slice(0, 6)) {
       await p.query(stmt);
     }
 
-    // Seeds
+    // 2. Column Migrations (Silent Fail if exists)
+    for (const stmt of SCHEMA_STATEMENTS.slice(6)) {
+      await p.query(stmt).catch(() => null);
+    }
+
+    // 3. Seeds
     const [users] = await p.query('SELECT COUNT(*) as count FROM users');
     if ((users as any)[0].count === 0) {
       console.log('Seeding initial data...');
