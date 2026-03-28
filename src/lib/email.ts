@@ -1,5 +1,4 @@
-// Email utility — supports Resend, SendGrid, Postmark (all via fetch, no extra npm packages)
-// NEW: Added Nodemailer support for Gmail (to bypass free-tier API recipient blocks)
+// Email utility — Gmail via Nodemailer (sole provider)
 
 export interface EmailPayload {
   to: string;
@@ -10,23 +9,12 @@ export interface EmailPayload {
 export async function sendEmail(payload: EmailPayload): Promise<void> {
   const gmailUser = process.env.GMAIL_USER;
   const gmailPass = process.env.GMAIL_PASS;
-  
-  const resendKey = process.env.RESEND_API_KEY;
-  const sendgridKey = process.env.SENDGRID_API_KEY;
-  const postmarkToken = process.env.POSTMARK_SERVER_TOKEN;
-  const fromAddress = process.env.EMAIL_FROM || 'Schedulo <onboarding@resend.dev>';
 
   if (gmailUser && gmailPass) {
     await sendViaGmail(payload, gmailUser, gmailPass);
-  } else if (resendKey && resendKey !== 're_your_api_key_here') {
-    await sendViaResend(payload, resendKey, fromAddress);
-  } else if (sendgridKey) {
-    await sendViaSendGrid(payload, sendgridKey, fromAddress);
-  } else if (postmarkToken) {
-    await sendViaPostmark(payload, postmarkToken, fromAddress);
   } else {
-    // No provider configured — log to console (useful for local dev)
-    console.log('\n📧 ─────────────── EMAIL (no provider configured) ───────────────');
+    // No credentials configured — log to console (useful for local dev)
+    console.log('\n📧 ─────────────── EMAIL (Gmail not configured) ─────────────────');
     console.log(`To:      ${payload.to}`);
     console.log(`Subject: ${payload.subject}`);
     console.log('─────────────────────────────────────────────────────────────────\n');
@@ -35,78 +23,20 @@ export async function sendEmail(payload: EmailPayload): Promise<void> {
 
 async function sendViaGmail(payload: EmailPayload, user: string, pass: string) {
   const nodemailer = (await import('nodemailer')).default;
+
   const transporter = nodemailer.createTransport({
     service: 'gmail',
-    auth: { user, pass }
+    auth: { user, pass },
   });
-  
+
   await transporter.sendMail({
-    from: `"Schedulo App" <${user}>`,
+    from: `"Schedulo" <${user}>`,
     to: payload.to,
     subject: payload.subject,
-    html: payload.html
+    html: payload.html,
   });
-  console.log(`[Gmail] ✓ Email sent to ${payload.to}`);
-}
 
-async function sendViaResend(payload: EmailPayload, apiKey: string, from: string) {
-  const res = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ from, to: [payload.to], subject: payload.subject, html: payload.html }),
-  });
-  if (!res.ok) {
-    const err = await res.text();
-    console.error('[Resend] Failed to send email:', err);
-  } else {
-    console.log(`[Resend] ✓ Email sent to ${payload.to}`);
-  }
-}
-
-async function sendViaSendGrid(payload: EmailPayload, apiKey: string, from: string) {
-  // Extract plain email if format is "Name <email>"
-  const fromEmail = from.match(/<(.+)>/) ? from.match(/<(.+)>/)![1] : from;
-  const fromName = from.match(/^(.+?)\s*</) ? from.match(/^(.+?)\s*</)![1] : 'Schedulo';
-
-  const res = await fetch('https://api.sendgrid.com/v3/mail/send', {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      personalizations: [{ to: [{ email: payload.to }] }],
-      from: { email: fromEmail, name: fromName },
-      subject: payload.subject,
-      content: [{ type: 'text/html', value: payload.html }],
-    }),
-  });
-  if (!res.ok) {
-    const err = await res.text();
-    console.error('[SendGrid] Failed to send email:', err);
-  } else {
-    console.log(`[SendGrid] ✓ Email sent to ${payload.to}`);
-  }
-}
-
-async function sendViaPostmark(payload: EmailPayload, token: string, from: string) {
-  const res = await fetch('https://api.postmarkapp.com/email', {
-    method: 'POST',
-    headers: {
-      'X-Postmark-Server-Token': token,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ From: from, To: payload.to, Subject: payload.subject, HtmlBody: payload.html }),
-  });
-  if (!res.ok) {
-    const err = await res.text();
-    console.error('[Postmark] Failed to send email:', err);
-  } else {
-    console.log(`[Postmark] ✓ Email sent to ${payload.to}`);
-  }
+  console.log(`[Gmail ✓] Email sent to ${payload.to}`);
 }
 
 // ─── Email Templates ──────────────────────────────────────────────────────────
