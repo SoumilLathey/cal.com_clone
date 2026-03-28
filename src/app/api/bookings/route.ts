@@ -51,12 +51,21 @@ export async function POST(req: NextRequest) {
   const bookingUid = Math.random().toString(36).substring(2) + Date.now().toString(36);
 
   const result = await dbRun(
-    `INSERT INTO bookings (event_type_id, booker_name, booker_email, start_time, end_time, notes, uid, answers, rescheduled_from)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    [event_type_id, booker_name, booker_email, sqlStart, sqlEnd,
-      notes || '', bookingUid,
+    `INSERT INTO bookings (event_type_id, user_id, booker_name, booker_email, start_time, end_time, notes, status, uid, answers, rescheduled_from)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    [
+      event_type_id,
+      1,
+      booker_name,
+      booker_email,
+      sqlStart,
+      sqlEnd,
+      notes || '',
+      'upcoming',
+      bookingUid,
       JSON.stringify(answers ?? []),
-      rescheduled_from || null]
+      rescheduled_from || null
+    ]
   );
 
   // Cancel the old booking if rescheduling
