@@ -11,29 +11,31 @@ function getPool() {
   if (pool) return pool;
 
   const connectionString = process.env.MYSQL_PUBLIC_URL || process.env.MYSQL_URL || process.env.DATABASE_URL;
-  const config = connectionString
-    ? { uri: connectionString }
-    : {
+
+  if (connectionString) {
+    // Use the full URL directly - better for complex passwords and ports
+    pool = mysql.createPool({
+      uri: connectionString,
+      ssl: { rejectUnauthorized: false },
+      waitForConnections: true,
+      connectionLimit: 10,
+    });
+  } else if (process.env.MYSQLHOST) {
+    // Fallback to individual variables
+    pool = mysql.createPool({
       host: process.env.MYSQLHOST,
       user: process.env.MYSQLUSER,
       password: process.env.MYSQLPASSWORD,
       database: process.env.MYSQLDATABASE,
       port: Number(process.env.MYSQLPORT || 3306),
-    };
-
-  if (!connectionString && !process.env.MYSQLHOST) {
+      ssl: { rejectUnauthorized: false },
+      waitForConnections: true,
+      connectionLimit: 10,
+    });
+  } else {
     throw new Error('Database connection variables (MYSQL_URL or MYSQLHOST) are missing.');
   }
 
-  pool = mysql.createPool({
-    ...config,
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0,
-    ssl: {
-      rejectUnauthorized: false
-    }
-  });
   return pool;
 }
 
