@@ -8,10 +8,31 @@ export const metadata: Metadata = {
   title: 'Cal.com - Schedulo Replica',
   description: 'A pixel-perfect replica of the Cal.com homepage.',
 };
-
 export default function LandingPage() {
   return (
-    <div style={{ fontFamily: 'Inter, -apple-system, sans-serif', background: '#f3f4f6', color: '#111827', minHeight: '100vh', padding: '16px 0', display: 'flex', flexDirection: 'column', zoom: 0.85, position: 'relative' }}>
+    <>
+      <style>{`
+        .root-container {
+          zoom: 1;
+        }
+        @media (max-width: 1024px) {
+          .mobile-stack { flex-direction: column !important; gap: 32px !important; }
+          .mobile-hide { display: none !important; }
+          .mobile-padding { padding: 32px 20px !important; }
+          .mobile-center { text-align: center !important; align-items: center !important; margin-left: auto !important; margin-right: auto !important; }
+          .mobile-full-width { width: 100% !important; max-width: 100% !important; }
+          .mobile-grid-1 { grid-template-columns: 1fr !important; }
+          .mobile-grid-2 { grid-template-columns: 1fr 1fr !important; }
+          .hero-text { font-size: 40px !important; line-height: 1.1 !important; }
+          .feature-icons { grid-template-columns: repeat(2, 1fr) !important; }
+          .footer-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
+          .logo-slider-container { flex-direction: column !important; gap: 24px !important; text-align: center !important; }
+        }
+        @media (min-width: 1025px) {
+          .root-container { zoom: 0.85; }
+        }
+      `}</style>
+      <div className="root-container" style={{ fontFamily: 'Inter, -apple-system, sans-serif', background: '#f3f4f6', color: '#111827', minHeight: '100vh', padding: '16px 0', display: 'flex', flexDirection: 'column', position: 'relative' }}>
       
       {/* GLOBAL GRID LINES */}
       <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0, overflow: 'hidden' }}>
@@ -37,7 +58,7 @@ export default function LandingPage() {
           <div style={{ display: 'flex', alignItems: 'center', fontWeight: 800, fontSize: '20px', color: '#111827', letterSpacing: '-0.04em' }}>
             Cal.com
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '32px', marginLeft: '4px' }}>
+          <div className="mobile-hide" style={{ display: 'flex', alignItems: 'center', gap: '32px', marginLeft: '4px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer' }}>Solutions <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M6 9l6 6 6-6" /></svg></div>
             <div style={{ cursor: 'pointer' }}>Enterprise</div>
             <div style={{ cursor: 'pointer' }}>Cal.ai</div>
@@ -64,7 +85,7 @@ export default function LandingPage() {
         background: 'white', border: '1px solid #e5e7eb', borderRadius: '24px',
         overflow: 'hidden', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)'
       }}>
-        <div style={{ padding: '64px 48px 100px', display: 'flex', gap: '48px' }}>
+        <div className="mobile-stack mobile-padding" style={{ padding: '64px 48px 100px', display: 'flex', gap: '48px' }}>
 
           {/* LEFT COLUMN */}
           <div style={{ flex: '1.2' }}>
@@ -72,13 +93,13 @@ export default function LandingPage() {
               Cal.com launches v6.3 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M9 18l6-6-6-6" /></svg>
             </div>
 
-            <h1 style={{ fontSize: '64px', fontWeight: 700, lineHeight: 0.95, letterSpacing: '-0.04em', margin: '0 0 20px', color: '#1f2937' }}>
+            <h1 className="hero-text mobile-center" style={{ fontSize: '64px', fontWeight: 700, lineHeight: 0.95, letterSpacing: '-0.04em', margin: '0 0 20px', color: '#1f2937' }}>
               The better way to<br />
               schedule your<br />
               meetings
             </h1>
 
-            <p style={{ fontSize: '16px', color: '#6b7280', lineHeight: 1.5, marginBottom: '32px', maxWidth: '420px', fontWeight: 400, letterSpacing: '-0.01em' }}>
+            <p className="mobile-center" style={{ fontSize: '16px', color: '#6b7280', lineHeight: 1.5, marginBottom: '32px', maxWidth: '420px', fontWeight: 400, letterSpacing: '-0.01em' }}>
               A fully customizable scheduling software for individuals, businesses taking calls and developers building scheduling platforms where users meet users.
             </p>
 
@@ -235,12 +256,11 @@ export default function LandingPage() {
           <div style={{ position: 'relative', height: '1px', background: '#e5e7eb', marginTop: '120px' }}>
             <div style={{ maxWidth: '1140px', margin: '0 auto', position: 'relative', height: '100%' }}>
               <div style={{ position: 'absolute', top: '-6px', left: '-4.5px', color: '#d1d5db', fontSize: '12px', lineHeight: 1 }}>+</div>
-              <div style={{ position: 'absolute', top: '-6px', right: '-4.5px', color: '#d1d5db', fontSize: '12px', lineHeight: 1 }}>+</div>
             </div>
           </div>
 
           {/* THREE CARDS SECTION */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px', maxWidth: '1140px', width: '100%', margin: '0 auto' }}>
+          <div className="mobile-grid-1" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', maxWidth: '1140px', margin: '0 auto' }}>
 
             {/* CARD 01 */}
             <div style={{ background: 'white', border: '1px solid #e5e7eb', borderRadius: '24px', padding: '32px', textAlign: 'left', display: 'flex', flexDirection: 'column' }}>
@@ -778,8 +798,8 @@ export default function LandingPage() {
                 </div>
               </div>
 
-              {/* App 8: HubSpot */}
-              <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              {/* RIGHT COLUMN - MOCKUP */}
+              <div className="mobile-hide" style={{ flex: '1', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#FF7A59" strokeWidth="2.5"><circle cx="12" cy="12" r="3"/><circle cx="5" cy="17" r="2"/><circle cx="19" cy="7" r="2"/><path d="M10 14l-3 2"/><path d="M14 10l3-2"/></svg>
               </div>
 
@@ -978,7 +998,7 @@ export default function LandingPage() {
               <div style={{ position: 'absolute', bottom: '-6px', right: '-4.5px', color: '#d1d5db', fontSize: '12px', lineHeight: 1 }}>+</div>
             </div>
 
-            <div style={{ maxWidth: '1140px', margin: '0 auto', display: 'flex', alignItems: 'center', gap: '48px', padding: '12px 24px', position: 'relative', zIndex: 1 }}>
+            <div className="logo-slider-container mobile-padding" style={{ maxWidth: '1140px', margin: '0 auto', display: 'flex', alignItems: 'center', gap: '48px', padding: '12px 24px', position: 'relative', zIndex: 1 }}>
               <div style={{ fontSize: '12px', color: '#9ca3af', fontWeight: 500, lineHeight: 1.4, width: '160px', flexShrink: 0, background: '#f3f4f6', zIndex: 3, position: 'relative', paddingRight: '12px', textAlign: 'left' }}>
                 Trusted by fast-growing<br />
                 companies around the world
@@ -1092,7 +1112,7 @@ export default function LandingPage() {
 
       {/* Final Comprehensive Footer */}
       <footer style={{ background: '#f9fafb', padding: '60px 24px 80px', borderTop: '1px solid #e5e7eb', position: 'relative', zIndex: 10 }}>
-        <div style={{ maxWidth: '1140px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1.2fr repeat(4, 1fr)', gap: '48px', alignItems: 'start' }}>
+        <div className="footer-grid mobile-padding" style={{ maxWidth: '1140px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1.2fr repeat(4, 1fr)', gap: '48px', alignItems: 'start' }}>
           
           {/* Logo & Compliance Column */}
           <div>
@@ -1190,5 +1210,6 @@ export default function LandingPage() {
         </div>
       </footer>
     </div>
+    </>
   );
 }
