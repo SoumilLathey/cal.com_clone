@@ -138,10 +138,7 @@ const SCHEMA_STATEMENTS = [
   `ALTER TABLE availability ADD COLUMN is_default TINYINT(1) NOT NULL DEFAULT 0`
 ];
 
-let hasBeenInitialized = false;
-
 export async function initDb(): Promise<void> {
-  if (hasBeenInitialized) return;
   try {
     const p = getPool();
     console.log('--- Initializing MySQL Database ---');
@@ -188,7 +185,6 @@ export async function initDb(): Promise<void> {
       }
     }
 
-    hasBeenInitialized = true;
     console.log('--- MySQL Database Ready ---');
   } catch (error) {
     console.error('MySQL initialization failed:', error);

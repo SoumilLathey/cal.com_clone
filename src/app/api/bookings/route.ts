@@ -77,20 +77,26 @@ export async function POST(req: NextRequest) {
   };
   const subject = `✅ ${rescheduled_from ? 'Rescheduled' : 'Confirmed'}: ${booking.event_title}`;
 
-  // Start the email process but don't hold the user back
-  (async () => {
-    const emailPromises = [];
-    emailPromises.push(sendEmail({ to: booker_email, subject, html: buildConfirmationEmail(emailData) }));
-    const adminEmail = process.env.ADMIN_EMAIL || '';
-    if (adminEmail && adminEmail !== booker_email) {
-      emailPromises.push(sendEmail({
-        to: adminEmail,
-        subject: `📅 New booking: ${booking.event_title} with ${booker_name}`,
-        html: buildAdminNotificationEmail(emailData, 'confirmation'),
-      }));
+  // Start the email process but don't hold the user back - helps avoid UI hanging
+  const sendNotifications = async () => {
+    try {
+      const emailPromises = [];
+      emailPromises.push(sendEmail({ to: booker_email, subject, html: buildConfirmationEmail(emailData) }));
+      const adminEmail = process.env.ADMIN_EMAIL || '';
+      if (adminEmail && adminEmail !== booker_email) {
+        emailPromises.push(sendEmail({
+          to: adminEmail,
+          subject: `📅 New booking: ${booking.event_title} with ${booker_name}`,
+          html: buildAdminNotificationEmail(emailData, 'confirmation'),
+        }));
+      }
+      await Promise.all(emailPromises);
+    } catch (err) {
+      console.error('[Email Notifications Failed]:', err);
     }
-    await Promise.all(emailPromises).catch(console.error);
-  })();
+  };
+
+  sendNotifications(); // Fire and forget (Vercel may terminate this early, but booking succeeds)
 
   return NextResponse.json(booking, { status: 201 });
 }
