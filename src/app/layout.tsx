@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { initDb } from "@/lib/db2";
 
 export const metadata: Metadata = {
-  title: "Schedulo – The better way to schedule your meetings",
+  title: "Cal.com – The better way to schedule your meetings",
   description: "A fully customizable scheduling platform for individuals and businesses. Create event types, set availability, and let others book time with you.",
   icons: {
     icon: "/favicon.png",
@@ -14,6 +15,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Production DB initialization - safe to run multiple times
+  initDb().catch(console.error);
+
   return (
     <html lang="en">
       <head>

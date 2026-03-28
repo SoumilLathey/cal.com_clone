@@ -6,7 +6,7 @@ import LogoSlider from '@/components/LogoSlider';
 import TestimonialSlider from '@/components/TestimonialSlider';
 
 export const metadata: Metadata = {
-  title: 'Cal.com - Schedulo Replica',
+  title: 'Cal.com - The scheduling infrastructure for everyone',
   description: 'A pixel-perfect replica of the Cal.com homepage.',
 };
 export default function LandingPage() {
@@ -1199,7 +1199,7 @@ export default function LandingPage() {
             <span role="img" aria-label="hands">🙌</span> Wall of love
           </div>
           <h2 style={{ fontSize: '48px', fontWeight: 800, color: '#111827', letterSpacing: '-0.03em', margin: '0 0 16px' }}>
-            See why our users love Schedulo
+            See why our users love Cal.com
           </h2>
           <p style={{ fontSize: '16px', color: '#6b7280', maxWidth: '600px', margin: '0 auto 32px', lineHeight: 1.5, fontWeight: 500 }}>
             Read the impact we've had from those who matter most - our customers.
@@ -1246,7 +1246,7 @@ export default function LandingPage() {
                 </div>
                 <p style={{ color: '#374151', fontSize: '15px', lineHeight: 1.5 }}>
                   It's so well thought out. A lot of care has gone into most situations you will come across when trying to herd cats for meetings.<br /><br />
-                  <span style={{ color: '#8b5cf6' }}>Schedulo</span> is solving the problem of getting appointments organised but it goes beyond that with thoughtful and easy to use features. Workflows for pre and post meetings using email and SMS are brilliant.
+                  <span style={{ color: '#8b5cf6' }}>Cal.com</span> is solving the problem of getting appointments organised but it goes beyond that with thoughtful and easy to use features. Workflows for pre and post meetings using email and SMS are brilliant.
                 </p>
               </div>
 
@@ -1260,7 +1260,7 @@ export default function LandingPage() {
                 </div>
                 <p style={{ color: '#374151', fontSize: '15px', lineHeight: 1.5 }}>
                   Coolest domain. Check<br />Coolest mission. Check<br />Coolest product. Check<br /><br />
-                  <span style={{ color: '#8b5cf6' }}>schedulo.com</span>
+                  <span style={{ color: '#8b5cf6' }}>cal.com</span>
                 </p>
               </div>
 
@@ -1288,7 +1288,7 @@ export default function LandingPage() {
                   </div>
                 </div>
                 <p style={{ color: '#374151', fontSize: '15px', lineHeight: 1.5 }}>
-                  I am new to <span style={{ color: '#8b5cf6' }}>Schedulo</span> but so far they have scored 10/10 - it has the features I need, including connecting to Apple Calendar (I withdrew from Calendly because they dropped support for iCal without giving a reason.) Also it is free; $10 a month may not seem much but when you have several apps of this kind it adds up. And <span style={{ color: '#8b5cf6' }}>schedulo.com</span> were extremely helpful and prompt in dealing with my questions.
+                  I am new to <span style={{ color: '#8b5cf6' }}>Cal.com</span> but so far they have scored 10/10 - it has the features I need, including connecting to Apple Calendar (I withdrew from Calendly because they dropped support for iCal without giving a reason.) Also it is free; $10 a month may not seem much but when you have several apps of this kind it adds up. And <span style={{ color: '#8b5cf6' }}>cal.com</span> were extremely helpful and prompt in dealing with my questions.
                 </p>
               </div>
 
@@ -1342,7 +1342,7 @@ export default function LandingPage() {
                   </div>
                 </div>
                 <p style={{ color: '#374151', fontSize: '15px', lineHeight: 1.5 }}>
-                  (finally) made the move to <span style={{ color: '#8b5cf6' }}>@schedulo</span> after I couldn't find how to edit events in the calendly dashboard and I must say - dash is 10/10<br /><br />
+                  (finally) made the move to <span style={{ color: '#8b5cf6' }}>@calcom</span> after I couldn't find how to edit events in the calendly dashboard and I must say - dash is 10/10<br /><br />
                   Bravo <span style={{ color: '#8b5cf6' }}>@peer_rich</span> and team (I should have moved over years ago!)<br /><br />
                   OSS fam
                 </p>
@@ -1357,7 +1357,7 @@ export default function LandingPage() {
                   </div>
                 </div>
                 <p style={{ color: '#374151', fontSize: '15px', lineHeight: 1.5 }}>
-                  for the love of me, why do people still use Calendly? Just today I have seen products reference Calendly while they know of <span style={{ color: '#8b5cf6' }}>@schedulo</span><br /><br />
+                  for the love of me, why do people still use Calendly? Just today I have seen products reference Calendly while they know of <span style={{ color: '#8b5cf6' }}>@calcom</span><br /><br />
                   It's a no brainer for me to use , their brand is amazing, cool team + they even have more compelling features 🔥
                 </p>
               </div>
@@ -1494,9 +1494,9 @@ export default function LandingPage() {
 
             {/* Logo & Compliance Column */}
             <div>
-              <div style={{ fontSize: '24px', fontWeight: 900, color: '#111827', marginBottom: '16px' }}>Schedulo.com</div>
+              <div style={{ fontSize: '24px', fontWeight: 900, color: '#111827', marginBottom: '16px' }}>Cal.com</div>
               <p style={{ fontSize: '13px', color: '#6b7280', lineHeight: 1.5, marginBottom: '24px' }}>
-                Schedulo.com® and Schedulo® are a registered trademark by Schedulo.com, Inc. All rights reserved.
+                Cal.com® and Cal® are a registered trademark by Cal.com, Inc. All rights reserved.
               </p>
 
               {/* Compliance Icons */}
@@ -1552,7 +1552,7 @@ export default function LandingPage() {
             <div>
               <div style={{ fontSize: '14px', fontWeight: 700, color: '#111827', marginBottom: '20px' }}>Solutions</div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                {['iOS/Android App', 'Self-hosted', 'Pricing', 'Docs', 'Schedulo.ai', 'Enterprise', 'Integrations', 'Routing', 'Platform Atoms', 'Desktop App', 'FAQ', 'Enterprise API', 'Github'].map(link => (
+                {['iOS/Android App', 'Self-hosted', 'Pricing', 'Docs', 'Cal.ai', 'Enterprise', 'Integrations', 'Routing', 'Platform Atoms', 'Desktop App', 'FAQ', 'Enterprise API', 'Github'].map(link => (
                   <Link key={link} href="#" style={{ textDecoration: 'none', color: '#6b7280', fontSize: '14px', fontWeight: 500 }}>{link}</Link>
                 ))}
               </div>

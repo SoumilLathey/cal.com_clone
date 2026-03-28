@@ -17,10 +17,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </button>
         <Link href="/" style={{ fontWeight: 900, fontSize: 17, color: '#111827', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 7 }}>
           <svg width="22" height="22" viewBox="0 0 28 28" fill="none">
-            <rect width="28" height="28" rx="7" fill="#111827"/>
-            <path d="M8 14h12M8 9h12M8 19h7" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+            <rect width="28" height="28" rx="7" fill="#111827" />
+            <path d="M8 14h12M8 9h12M8 19h7" stroke="white" strokeWidth="2" strokeLinecap="round" />
           </svg>
-          Schedulo
+          Cal.com
         </Link>
         <div style={{ width: 32 }} />
       </div>

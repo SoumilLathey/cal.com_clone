@@ -8,7 +8,7 @@ export default function SettingsPage() {
   const [profile, setProfile] = useState({
     name: 'Admin',
     username: 'alex',
-    email: 'admin@schedulo.app',
+    email: 'admin@cal.com',
     bio: 'Software engineer and tech enthusiast. Book a meeting to chat!',
     timezone: 'America/New_York',
     dateFormat: 'MM/DD/YYYY',
@@ -70,7 +70,7 @@ export default function SettingsPage() {
               <div className="form-group">
                 <label className="form-label">Username</label>
                 <div style={{ display: 'flex', alignItems: 'center', border: '1px solid var(--border)', borderRadius: 8, overflow: 'hidden' }}>
-                  <span style={{ padding: '8px 10px', background: 'var(--bg)', borderRight: '1px solid var(--border)', color: 'var(--text-muted)', fontSize: 13, whiteSpace: 'nowrap' }}>schedulo.app/</span>
+                  <span style={{ padding: '8px 10px', background: 'var(--bg)', borderRight: '1px solid var(--border)', color: 'var(--text-muted)', fontSize: 13, whiteSpace: 'nowrap' }}>cal.com/</span>
                   <input
                     style={{ border: 'none', outline: 'none', background: 'transparent', color: 'inherit', padding: '8px 12px', flex: 1, fontSize: 13, fontFamily: 'inherit' }}
                     value={profile.username}
@@ -154,7 +154,7 @@ export default function SettingsPage() {
               </div>
               <Link href="/admin" target="_blank" className="btn btn-secondary">
                 <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <path d="M6 2H2v12h12v-4M9 2h5v5M14 2l-7 7"/>
+                  <path d="M6 2H2v12h12v-4M9 2h5v5M14 2l-7 7" />
                 </svg>
                 View Page
               </Link>

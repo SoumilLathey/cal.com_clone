@@ -3,7 +3,7 @@ import path from 'path';
 import fs from 'fs';
 
 const DB_DIR = path.join(process.cwd(), 'data');
-const DB_PATH = path.join(DB_DIR, 'schedulo.db');
+const DB_PATH = path.join(DB_DIR, 'calcom.db');
 
 let db: Database.Database | null = null;
 
@@ -30,7 +30,7 @@ function initSchema(db: Database.Database) {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL DEFAULT 'Demo User',
       username TEXT NOT NULL UNIQUE DEFAULT 'demo',
-      email TEXT NOT NULL UNIQUE DEFAULT 'demo@schedulo.app',
+      email TEXT NOT NULL UNIQUE DEFAULT 'demo@cal.com',
       avatar TEXT,
       timezone TEXT NOT NULL DEFAULT 'America/New_York',
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP
@@ -95,7 +95,7 @@ function seedData(db: Database.Database) {
   // Insert default user
   db.prepare(`
     INSERT INTO users (name, username, email, timezone)
-    VALUES ('Admin', 'alex', 'admin@schedulo.app', 'America/New_York')
+    VALUES ('Admin', 'alex', 'admin@cal.com', 'America/New_York')
   `).run();
 
   // Insert event types

@@ -146,14 +146,14 @@ export default function DashboardPage() {
             <p style={{ color: 'var(--text-muted)', fontSize: '14px', margin: '4px 0 0 0' }}>Configure different events for people to book on your calendar.</p>
           </div>
           <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-             <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-               <svg style={{ position: 'absolute', left: '12px', color: 'var(--text-muted)' }} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg>
-               <input placeholder="Search" style={{ background: 'transparent', border: '1px solid #374151', borderRadius: '6px', padding: '8px 12px 8px 32px', color: 'inherit', fontSize: '14px', width: '220px', outline: 'none' }} />
-             </div>
-             <button onClick={openCreate} style={{ padding: '8px 16px', display: 'flex', gap: '6px', alignItems: 'center', background: 'transparent', color: 'white', borderRadius: '6px', border: '1px solid white', cursor: 'pointer', fontWeight: 600, fontSize: '14px' }}>
-               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M12 5v14M5 12h14"/></svg>
-               New
-             </button>
+            <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+              <svg style={{ position: 'absolute', left: '12px', color: 'var(--text-muted)' }} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8" /><path d="M21 21l-4.3-4.3" /></svg>
+              <input placeholder="Search" style={{ background: 'transparent', border: '1px solid #374151', borderRadius: '6px', padding: '8px 12px 8px 32px', color: 'inherit', fontSize: '14px', width: '220px', outline: 'none' }} />
+            </div>
+            <button onClick={openCreate} style={{ padding: '8px 16px', display: 'flex', gap: '6px', alignItems: 'center', background: 'transparent', color: 'white', borderRadius: '6px', border: '1px solid white', cursor: 'pointer', fontWeight: 600, fontSize: '14px' }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M12 5v14M5 12h14" /></svg>
+              New
+            </button>
           </div>
         </div>
       </div>
@@ -180,49 +180,49 @@ export default function DashboardPage() {
               <div key={ev.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 24px', borderBottom: i === events.length - 1 ? 'none' : '1px solid #374151', background: 'transparent' }}>
                 {/* Left Side */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <div style={{ fontSize: '14px', fontWeight: 600, color: 'inherit' }}>{ev.title}</div>
-                      <div style={{ fontSize: '14px', color: 'var(--text-muted)', fontWeight: 400 }}>/{ev.slug}</div>
-                   </div>
-                   <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: '#1f2937', padding: '4px 8px', borderRadius: '6px', fontSize: '12px', color: '#d1d5db', width: 'fit-content' }}>
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-                      {ev.duration}m
-                   </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <div style={{ fontSize: '14px', fontWeight: 600, color: 'inherit' }}>{ev.title}</div>
+                    <div style={{ fontSize: '14px', color: 'var(--text-muted)', fontWeight: 400 }}>/{ev.slug}</div>
+                  </div>
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: '#1f2937', padding: '4px 8px', borderRadius: '6px', fontSize: '12px', color: '#d1d5db', width: 'fit-content' }}>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" /></svg>
+                    {ev.duration}m
+                  </div>
                 </div>
                 {/* Right Side */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                   
-                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      {!ev.is_active && <span style={{ fontSize: '14px', color: 'var(--text-muted)' }}>Hidden</span>}
-                      {/* Custom inline toggle Switch */}
-                      <label style={{ margin: 0, cursor: 'pointer', display: 'flex' }}>
-                        <input type="checkbox" checked={!!ev.is_active} onChange={() => toggleActive(ev)} style={{ display: 'none' }} />
-                        <span style={{ 
-                          display: 'inline-block', width: '40px', height: '22px', 
-                          background: ev.is_active ? 'var(--text-color, white)' : '#374151', 
-                          borderRadius: '11px', position: 'relative', transition: '0.2s',
-                          border: '1px solid #4b5563'
-                        }}>
-                          <span style={{ 
-                            position: 'absolute', top: '2px', left: ev.is_active ? '20px' : '2px', 
-                            width: '16px', height: '16px', borderRadius: '50%', background: ev.is_active ? 'var(--bg-color, black)' : '#9ca3af', 
-                            transition: '0.2s' 
-                          }} />
-                        </span>
-                      </label>
-                   </div>
 
-                   <div style={{ display: 'flex', gap: '4px' }}>
-                     <a href={`${baseUrl}/book/${ev.slug}`} target="_blank" rel="noreferrer" title="Preview" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', border: '1px solid #374151', borderRadius: '6px', color: 'var(--text-muted)', cursor: 'pointer', textDecoration: 'none', background: 'transparent' }}>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
-                     </a>
-                     <button onClick={() => copyLink(ev.slug)} title="Copy link" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', border: '1px solid #374151', borderRadius: '6px', cursor: 'pointer', background: 'transparent', color: 'var(--text-muted)' }}>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
-                     </button>
-                     <button onClick={() => openEdit(ev)} title="Edit / More actions" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', border: '1px solid #374151', borderRadius: '6px', cursor: 'pointer', background: 'transparent', color: 'var(--text-muted)' }}>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
-                     </button>
-                   </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    {!ev.is_active && <span style={{ fontSize: '14px', color: 'var(--text-muted)' }}>Hidden</span>}
+                    {/* Custom inline toggle Switch */}
+                    <label style={{ margin: 0, cursor: 'pointer', display: 'flex' }}>
+                      <input type="checkbox" checked={!!ev.is_active} onChange={() => toggleActive(ev)} style={{ display: 'none' }} />
+                      <span style={{
+                        display: 'inline-block', width: '40px', height: '22px',
+                        background: ev.is_active ? 'var(--text-color, white)' : '#374151',
+                        borderRadius: '11px', position: 'relative', transition: '0.2s',
+                        border: '1px solid #4b5563'
+                      }}>
+                        <span style={{
+                          position: 'absolute', top: '2px', left: ev.is_active ? '20px' : '2px',
+                          width: '16px', height: '16px', borderRadius: '50%', background: ev.is_active ? 'var(--bg-color, black)' : '#9ca3af',
+                          transition: '0.2s'
+                        }} />
+                      </span>
+                    </label>
+                  </div>
+
+                  <div style={{ display: 'flex', gap: '4px' }}>
+                    <a href={`${baseUrl}/book/${ev.slug}`} target="_blank" rel="noreferrer" title="Preview" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', border: '1px solid #374151', borderRadius: '6px', color: 'var(--text-muted)', cursor: 'pointer', textDecoration: 'none', background: 'transparent' }}>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3" /></svg>
+                    </a>
+                    <button onClick={() => copyLink(ev.slug)} title="Copy link" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', border: '1px solid #374151', borderRadius: '6px', cursor: 'pointer', background: 'transparent', color: 'var(--text-muted)' }}>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" /></svg>
+                    </button>
+                    <button onClick={() => openEdit(ev)} title="Edit / More actions" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', border: '1px solid #374151', borderRadius: '6px', cursor: 'pointer', background: 'transparent', color: 'var(--text-muted)' }}>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="1" /><circle cx="19" cy="12" r="1" /><circle cx="5" cy="12" r="1" /></svg>
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
@@ -238,7 +238,7 @@ export default function DashboardPage() {
               <h2 className="modal-title">{editEvent ? 'Edit Event Type' : 'New Event Type'}</h2>
               <button className="btn btn-ghost btn-sm" onClick={() => setShowModal(false)}>
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <path d="M2 2l12 12M14 2L2 14"/>
+                  <path d="M2 2l12 12M14 2L2 14" />
                 </svg>
               </button>
             </div>
@@ -256,7 +256,7 @@ export default function DashboardPage() {
                 <label className="form-label">URL Slug *</label>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 0, border: '1px solid var(--border)', borderRadius: 8, overflow: 'hidden' }}>
                   <span style={{ padding: '8px 10px', background: 'var(--bg)', borderRight: '1px solid var(--border)', color: 'var(--text-muted)', fontSize: 13, whiteSpace: 'nowrap' }}>
-                    schedulo.app/
+                    cal.com/
                   </span>
                   <input
                     style={{ border: 'none', outline: 'none', background: 'transparent', color: 'inherit', padding: '8px 12px', flex: 1, fontSize: 13, fontFamily: 'inherit' }}
@@ -345,15 +345,15 @@ export default function DashboardPage() {
                     {form.custom_questions.map((q, i) => (
                       <div key={q.id} style={{ border: '1px solid var(--border)', borderRadius: 8, padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: 6 }}>
                         <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
-                          <span style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 600, minWidth: 16 }}>Q{i+1}</span>
+                          <span style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 600, minWidth: 16 }}>Q{i + 1}</span>
                           <input
                             className="form-input" style={{ flex: 1 }}
-                            placeholder="Question label (e.g. What would you like to discuss?)" 
+                            placeholder="Question label (e.g. What would you like to discuss?)"
                             value={q.label}
                             onChange={e => updateQuestion(q.id, 'label', e.target.value)}
                           />
                           <button type="button" className="btn btn-ghost btn-sm" style={{ color: '#ef4444', padding: '4px 6px' }} onClick={() => removeQuestion(q.id)}>
-                            <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M2 2l12 12M14 2L2 14"/></svg>
+                            <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M2 2l12 12M14 2L2 14" /></svg>
                           </button>
                         </div>
                         <div style={{ display: 'flex', gap: 6, alignItems: 'center', paddingLeft: 22 }}>

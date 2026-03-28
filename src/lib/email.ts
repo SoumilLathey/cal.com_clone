@@ -30,7 +30,7 @@ async function sendViaGmail(payload: EmailPayload, user: string, pass: string) {
   });
 
   await transporter.sendMail({
-    from: `"Schedulo" <${user}>`,
+    from: `"Cal.com" <${user}>`,
     to: payload.to,
     subject: payload.subject,
     html: payload.html,
@@ -72,13 +72,13 @@ function baseTemplate(content: string) {
 <body>
 <div class="wrapper">
   <div class="header">
-    <span class="header-logo">📅 Schedulo</span>
+    <span class="header-logo">📅 Cal.com</span>
   </div>
   <div class="body">
     ${content}
   </div>
   <div class="footer">
-    © 2026 Schedulo · You received this email because a meeting was booked via Schedulo.
+    © 2026 Cal.com · You received this email because a meeting was booked via Cal.com.
   </div>
 </div>
 </body>

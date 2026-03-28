@@ -23,7 +23,7 @@ interface SidebarProps {
 export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const pathname = usePathname();
   const [copied, setCopied] = useState(false);
-  const [notifEmail, setNotifEmail] = useState('alex@schedulo.app');
+  const [notifEmail, setNotifEmail] = useState('alex@cal.com');
 
   useEffect(() => {
     const e = localStorage.getItem('notification_email');
@@ -51,7 +51,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             <rect width="28" height="28" rx="7" fill="#111827" />
             <path d="M8 14h12M8 9h12M8 19h7" stroke="white" strokeWidth="2" strokeLinecap="round" />
           </svg>
-          <span>Schedulo</span>
+          <span>Cal.com</span>
         </Link>
 
         <nav className="sidebar-nav">
@@ -98,7 +98,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
               Your booking link
             </div>
             <div style={{ fontSize: 12, color: 'var(--text-primary)', fontWeight: 500, marginBottom: 8, wordBreak: 'break-all' }}>
-              schedulo.app/<span style={{ color: '#6366f1' }}>alex</span>
+              cal.com/<span style={{ color: '#6366f1' }}>alex</span>
             </div>
             <button
               onClick={copyLink}

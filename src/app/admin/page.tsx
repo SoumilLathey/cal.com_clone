@@ -25,12 +25,12 @@ export default function UserProfilePage() {
       }}>
         <Link href="/" style={{ fontWeight: 900, fontSize: 16, color: '#111827', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 8 }}>
           <svg width="22" height="22" viewBox="0 0 28 28" fill="none">
-            <rect width="28" height="28" rx="7" fill="#111827"/>
-            <path d="M8 14h12M8 9h12M8 19h7" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+            <rect width="28" height="28" rx="7" fill="#111827" />
+            <path d="M8 14h12M8 9h12M8 19h7" stroke="white" strokeWidth="2" strokeLinecap="round" />
           </svg>
-          Schedulo
+          Cal.com
         </Link>
-        <div style={{ fontSize: 13, color: '#9ca3af' }}>Powered by Schedulo</div>
+        <div style={{ fontSize: 13, color: '#9ca3af' }}>Powered by Cal.com</div>
       </nav>
 
       <div style={{ maxWidth: 640, margin: '0 auto', padding: '60px 24px' }}>
@@ -50,11 +50,11 @@ export default function UserProfilePage() {
           </p>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 20, marginTop: 12, fontSize: 12, color: '#9ca3af' }}>
             <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="8" cy="8" r="6" /><path d="M8 5v3l2 2" /></svg>
               Mon–Fri, 9 AM – 5 PM
             </span>
             <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="8" cy="8" r="6"/><path d="M3 8a5 5 0 005-5M13 8a5 5 0 01-5 5"/></svg>
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="8" cy="8" r="6" /><path d="M3 8a5 5 0 005-5M13 8a5 5 0 01-5 5" /></svg>
               America/New_York
             </span>
           </div>
@@ -87,13 +87,13 @@ export default function UserProfilePage() {
                 <div style={{ display: 'flex', gap: 14, fontSize: 12, color: '#9ca3af' }}>
                   <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                     <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
-                      <circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/>
+                      <circle cx="8" cy="8" r="6" /><path d="M8 5v3l2 2" />
                     </svg>
                     {ev.duration} min
                   </span>
                   <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                     <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
-                      <circle cx="8" cy="6" r="3"/><path d="M2 13a6 6 0 0112 0"/>
+                      <circle cx="8" cy="6" r="3" /><path d="M2 13a6 6 0 0112 0" />
                     </svg>
                     {ev.location}
                   </span>
@@ -101,7 +101,7 @@ export default function UserProfilePage() {
               </div>
 
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#9ca3af" strokeWidth="1.5">
-                <path d="M4 10h12M10 4l6 6-6 6"/>
+                <path d="M4 10h12M10 4l6 6-6 6" />
               </svg>
             </Link>
           ))}
@@ -109,7 +109,7 @@ export default function UserProfilePage() {
 
         <div style={{ marginTop: 48, textAlign: 'center', fontSize: 12, color: '#9ca3af' }}>
           Powered by{' '}
-          <Link href="/" style={{ color: '#6366f1', fontWeight: 600, textDecoration: 'none' }}>Schedulo</Link>
+          <Link href="/" style={{ color: '#6366f1', fontWeight: 600, textDecoration: 'none' }}>Cal.com</Link>
         </div>
       </div>
     </div>
