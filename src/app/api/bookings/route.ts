@@ -33,8 +33,12 @@ export async function POST(req: NextRequest) {
   if (isNaN(newStart) || isNaN(newEnd) || newEnd <= newStart)
     return NextResponse.json({ error: 'Invalid time range' }, { status: 400 });
 
+  // MySQL DATETIME strict mode formatting: 'YYYY-MM-DD HH:MM:SS'
+  const sqlStart = new Date(start_time).toISOString().slice(0, 19).replace('T', ' ');
+  const sqlEnd = new Date(end_time).toISOString().slice(0, 19).replace('T', ' ');
+
   // ── Conflict check: Use SQL directly for maximum speed ────────────────
-  const conflict = await dbGet('SELECT id FROM bookings WHERE user_id = 1 AND status != "cancelled" AND start_time < ? AND end_time > ? LIMIT 1', [end_time, start_time]);
+  const conflict = await dbGet('SELECT id FROM bookings WHERE user_id = 1 AND status != "cancelled" AND start_time < ? AND end_time > ? LIMIT 1', [sqlEnd, sqlStart]);
 
   if (conflict) {
     return NextResponse.json(
@@ -49,7 +53,7 @@ export async function POST(req: NextRequest) {
   const result = await dbRun(
     `INSERT INTO bookings (event_type_id, user_id, booker_name, booker_email, start_time, end_time, notes, status, uid, answers, rescheduled_from)
      VALUES (?, 1, ?, ?, ?, ?, ?, 'upcoming', ?, ?, ?)`,
-    [event_type_id, booker_name, booker_email, start_time, end_time,
+    [event_type_id, booker_name, booker_email, sqlStart, sqlEnd,
       notes || '', bookingUid,
       JSON.stringify(answers ?? []),
       rescheduled_from || null]
