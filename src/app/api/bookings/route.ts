@@ -12,9 +12,9 @@ export async function GET() {
     `);
     return NextResponse.json(bookings);
   } catch (error: any) {
-    return NextResponse.json({ 
-      error: 'Internal Server Error', 
-      details: error?.message || String(error) 
+    return NextResponse.json({
+      error: 'Internal Server Error',
+      details: error?.message || String(error)
     }, { status: 500 });
   }
 }
@@ -66,9 +66,9 @@ export async function POST(req: NextRequest) {
     `INSERT INTO bookings (event_type_id, user_id, booker_name, booker_email, start_time, end_time, notes, status, uid, answers, rescheduled_from)
      VALUES (?, 1, ?, ?, ?, ?, ?, 'upcoming', ?, ?, ?)`,
     [event_type_id, booker_name, booker_email, start_time, end_time,
-     notes || '', bookingUid,
-     JSON.stringify(answers ?? []),
-     rescheduled_from || null]
+      notes || '', bookingUid,
+      JSON.stringify(answers ?? []),
+      rescheduled_from || null]
   );
 
   // Cancel the old booking if rescheduling
@@ -92,16 +92,31 @@ export async function POST(req: NextRequest) {
     eventDuration: booking.duration, startTime: booking.start_time,
   };
   const subject = `✅ ${rescheduled_from ? 'Rescheduled' : 'Confirmed'}: ${booking.event_title}`;
-  sendEmail({ to: booker_email, subject, html: buildConfirmationEmail(emailData) }).catch(console.error);
 
+  // Important: We MUST await these on Vercel/Serverless so the function doesn't kill the process
+  const emailPromises = [];
+
+  // 1. Send to booker
+  emailPromises.push(
+    sendEmail({ to: booker_email, subject, html: buildConfirmationEmail(emailData) })
+  );
+
+  // 2. Send to admin
   const adminEmail = process.env.ADMIN_EMAIL || req.cookies.get('notification_email')?.value || '';
   if (adminEmail && adminEmail !== booker_email) {
-    sendEmail({
-      to: adminEmail,
-      subject: `📅 ${rescheduled_from ? 'Rescheduled' : 'New booking'}: ${booking.event_title} with ${booker_name}`,
-      html: buildAdminNotificationEmail(emailData, 'confirmation'),
-    }).catch(console.error);
+    emailPromises.push(
+      sendEmail({
+        to: adminEmail,
+        subject: `📅 ${rescheduled_from ? 'Rescheduled' : 'New booking'}: ${booking.event_title} with ${booker_name}`,
+        html: buildAdminNotificationEmail(emailData, 'confirmation'),
+      })
+    );
   }
+
+  // Wait for all emails to send before responding
+  await Promise.all(emailPromises).catch(err => {
+    console.error('[Email Failure]:', err);
+  });
 
   return NextResponse.json(booking, { status: 201 });
 }
