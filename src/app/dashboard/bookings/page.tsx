@@ -83,10 +83,12 @@ export default function BookingsPage() {
 
   return (
     <div style={{ maxWidth: 1200, margin: '0 auto', color: 'var(--text-color, inherit)' }}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', marginBottom: '16px', padding: '32px 32px 0 32px' }}>
-        <div>
-          <h1 style={{ fontSize: '20px', fontWeight: 700, margin: 0, letterSpacing: '-0.02em', color: 'inherit' }}>Bookings</h1>
-          <p style={{ color: 'var(--text-muted)', fontSize: '14px', margin: '4px 0 0 0' }}>See upcoming and past events booked through your event type links.</p>
+      <div className="app-heading">
+        <div className="app-heading-inner">
+          <div>
+            <h1 style={{ fontSize: '20px', fontWeight: 700, margin: 0, letterSpacing: '-0.02em', color: 'inherit' }}>Bookings</h1>
+            <p style={{ color: 'var(--text-muted)', fontSize: '14px', margin: '4px 0 0 0' }}>See upcoming and past events booked through your event type links.</p>
+          </div>
         </div>
 
         {/* Filters Top Bar */}

@@ -153,11 +153,12 @@ export default function AvailabilityPage() {
     return (
       <div style={{ paddingBottom: 60, color: 'var(--text-color, inherit)' }}>
         {/* Edit Header */}
-        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', padding: '32px 32px 24px', maxWidth: 1200, margin: '0 auto', flexWrap: 'wrap', gap: 16 }}>
-          <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16 }}>
-            <button onClick={() => setEditingSchedule(false)} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', marginTop: 4, display: 'flex' }}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
-            </button>
+        <div className="app-heading">
+          <div className="app-heading-inner">
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16 }}>
+              <button onClick={() => setEditingSchedule(false)} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', marginTop: 4, display: 'flex' }}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
+              </button>
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 20, fontWeight: 700, color: 'var(--text-primary)' }}>
                 <input
@@ -170,13 +171,14 @@ export default function AvailabilityPage() {
               <div style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 4 }}>{getSummary(activeAvail)}</div>
             </div>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <div className="app-heading-actions">
             <button className="btn btn-primary" onClick={save} disabled={saving} style={{ padding: '8px 24px', background: 'var(--text-primary)', color: 'var(--bg)', border: 'none', borderRadius: 6, fontWeight: 600, fontSize: 14, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8 }}>
               {saving ? <div className="spinner" style={{ width: 14, height: 14 }} /> : null}
               Save
             </button>
           </div>
         </div>
+      </div>
 
         {/* Edit Body */}
         <div style={{ padding: '0 32px 32px', maxWidth: 1200, margin: '0 auto', display: 'flex', gap: 32, flexWrap: 'wrap' }}>
@@ -323,12 +325,13 @@ export default function AvailabilityPage() {
   // --- List View (Default) --- //
   return (
     <div style={{ maxWidth: 1200, margin: '0 auto', color: 'var(--text-color, inherit)', paddingBottom: 60 }}>
-      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', padding: '32px 32px 24px', flexWrap: 'wrap', gap: 16 }}>
-        <div>
-          <h1 style={{ fontSize: 20, fontWeight: 700, margin: 0, letterSpacing: '-0.02em', color: 'inherit' }}>Availability</h1>
-          <div style={{ fontSize: 14, color: 'var(--text-muted)', marginTop: 4 }}>Configure times when you are available for bookings.</div>
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+      <div className="app-heading">
+        <div className="app-heading-inner">
+          <div>
+            <h1 style={{ fontSize: 20, fontWeight: 700, margin: 0, letterSpacing: '-0.02em', color: 'inherit' }}>Availability</h1>
+            <div style={{ fontSize: 14, color: 'var(--text-muted)', marginTop: 4 }}>Configure times when you are available for bookings.</div>
+          </div>
+          <div className="app-heading-actions">
           <div style={{ display: 'flex', border: '1px solid var(--border)', borderRadius: 6, overflow: 'hidden', padding: 2, background: 'var(--bg)' }}>
             <button style={{ background: 'var(--bg-card)', color: 'var(--text-primary)', border: '1px solid var(--border)', borderRadius: 4, padding: '4px 12px', fontSize: 13, cursor: 'pointer', fontWeight: 500 }}>My availability</button>
             <button style={{ background: 'transparent', color: 'var(--text-muted)', border: 'none', padding: '4px 12px', fontSize: 13, cursor: 'pointer', fontWeight: 500 }}>Team availability</button>
@@ -341,6 +344,7 @@ export default function AvailabilityPage() {
             New
           </button>
         </div>
+      </div>
       </div>
 
       <div style={{ padding: '0 32px', display: 'flex', flexDirection: 'column', gap: 16 }}>

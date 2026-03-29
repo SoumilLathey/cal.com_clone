@@ -139,13 +139,13 @@ export default function DashboardPage() {
 
   return (
     <div style={{ color: 'var(--text-color, inherit)' }}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', marginBottom: '24px', padding: '32px 32px 0 32px', maxWidth: 1200 }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+      <div className="app-heading">
+        <div className="app-heading-inner">
           <div>
             <h1 style={{ fontSize: '20px', fontWeight: 700, margin: 0, letterSpacing: '-0.02em', color: 'inherit' }}>Event types</h1>
             <p style={{ color: 'var(--text-muted)', fontSize: '14px', margin: '4px 0 0 0' }}>Configure different events for people to book on your calendar.</p>
           </div>
-          <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+          <div className="app-heading-actions">
             <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
               <svg style={{ position: 'absolute', left: '12px', color: 'var(--text-muted)' }} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8" /><path d="M21 21l-4.3-4.3" /></svg>
               <input placeholder="Search" style={{ background: 'transparent', border: '1px solid #374151', borderRadius: '6px', padding: '8px 12px 8px 32px', color: 'inherit', fontSize: '14px', width: '220px', outline: 'none' }} />
@@ -177,7 +177,7 @@ export default function DashboardPage() {
         ) : (
           <div style={{ border: '1px solid #374151', borderRadius: '8px', overflow: 'hidden' }}>
             {events.map((ev, i) => (
-              <div key={ev.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 24px', borderBottom: i === events.length - 1 ? 'none' : '1px solid #374151', background: 'transparent' }}>
+              <div key={ev.id} className="app-list-item" style={{ borderBottom: i === events.length - 1 ? 'none' : '1px solid #374151' }}>
                 {/* Left Side */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -190,7 +190,7 @@ export default function DashboardPage() {
                   </div>
                 </div>
                 {/* Right Side */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                <div className="app-list-item-side">
 
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     {!ev.is_active && <span style={{ fontSize: '14px', color: 'var(--text-muted)' }}>Hidden</span>}

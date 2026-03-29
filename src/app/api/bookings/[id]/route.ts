@@ -38,7 +38,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
       startTime: booking.start_time,
     };
 
-    sendEmail({
+    await sendEmail({
       to: booking.booker_email,
       subject: `❌ Cancelled: ${booking.event_title}`,
       html: buildCancellationEmail(emailData),
@@ -48,7 +48,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
       req.cookies.get('notification_email')?.value || '';
 
     if (adminEmail && adminEmail !== booking.booker_email) {
-      sendEmail({
+      await sendEmail({
         to: adminEmail,
         subject: `🚫 Booking cancelled: ${booking.event_title} with ${booking.booker_name}`,
         html: buildAdminNotificationEmail(emailData, 'cancellation'),

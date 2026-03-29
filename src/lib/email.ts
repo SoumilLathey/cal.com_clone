@@ -8,7 +8,7 @@ export interface EmailPayload {
 
 export async function sendEmail(payload: EmailPayload): Promise<void> {
   const gmailUser = process.env.GMAIL_USER;
-  const gmailPass = process.env.GMAIL_PASS;
+  const gmailPass = process.env.GMAIL_PASS?.replace(/\s+/g, '');
 
   if (gmailUser && gmailPass) {
     await sendViaGmail(payload, gmailUser, gmailPass);

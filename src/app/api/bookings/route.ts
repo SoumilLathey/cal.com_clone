@@ -107,9 +107,7 @@ export async function POST(req: NextRequest) {
     } catch (err) {
       console.error('[Email Notifications Failed]:', err);
     }
-  };
-
-  sendNotifications(); // Fire and forget (Vercel may terminate this early, but booking succeeds)
+  };  await sendNotifications();
 
   return NextResponse.json(booking, { status: 201 });
 }
