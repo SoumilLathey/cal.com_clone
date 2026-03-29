@@ -6,11 +6,10 @@ A full-featured scheduling and booking web application that closely replicates C
 
 ## 🌐 Live Demo
 
-- **App**: `http://localhost:3000`
-- **Landing Page**: `http://localhost:3000/`
-- **Dashboard**: `http://localhost:3000/dashboard`
-- **Public Profile**: `http://localhost:3000/alex`
-- **Sample Booking Page**: `http://localhost:3000/book/30min`
+- **App**: `https://calclone21-swart.vercel.app/dashboard`
+- **Landing Page**: `https://calclone21-swart.vercel.app/`
+- **Dashboard**: `https://calclone21-swart.vercel.app/dashboard`
+- **Public Profile**: `https://calclone21-swart.vercel.app/alex`
 
 ---
 
