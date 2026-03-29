@@ -131,10 +131,10 @@ export default function BookingsPage() {
             <div>
               {filtered.map(b => (
                 <div key={b.id}>
-                  <div style={{ padding: '20px', display: 'flex', borderBottom: '1px solid var(--border)', cursor: 'pointer', position: 'relative' }} onClick={() => setExpandedId(expandedId === b.id ? null : b.id)}>
+                  <div style={{ padding: '20px', display: 'flex', borderBottom: '1px solid var(--border)', cursor: 'pointer', position: 'relative', flexWrap: 'wrap', gap: 16 }} onClick={() => setExpandedId(expandedId === b.id ? null : b.id)}>
                     
                     {/* Left Column */}
-                    <div style={{ width: 220, flexShrink: 0 }}>
+                    <div style={{ width: 220, flexShrink: 0, flexGrow: 1 }}>
                       <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 2 }}>{formatDate(b.start_time)}</div>
                       <div style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 4 }}>{formatTime(b.start_time)} - {formatTime(b.end_time)}</div>
                       {b.location && (b.location.toLowerCase().includes('video') || b.location.toLowerCase().includes('meet') || b.location.toLowerCase().includes('zoom')) ? (
