@@ -1,15 +1,16 @@
 # Schedulo — Cal.com Clone
 
-A full-featured scheduling and booking web application that closely replicates Cal.com's design, UX, and functionality. Built with a modern tech stack including Next.js, MySQL, and Nodemailer.
+A full-featured scheduling and booking web application that closely replicates Cal.com's design, UX, and functionality. Built as a home assignment for evaluation.
 
 ---
 
 ## 🌐 Live Demo
 
-- **App**: `https://calclone21-swart.vercel.app/dashboard`
-- **Landing Page**: `https://calclone21-swart.vercel.app/`
-- **Dashboard**: `https://calclone21-swart.vercel.app/dashboard`
-- **Public Profile**: `https://calclone21-swart.vercel.app/alex`
+- **App**: `http://localhost:3000`
+- **Landing Page**: `http://localhost:3000/`
+- **Dashboard**: `http://localhost:3000/dashboard`
+- **Public Profile**: `http://localhost:3000/alex`
+- **Sample Booking Page**: `http://localhost:3000/book/30min`
 
 ---
 
@@ -19,22 +20,25 @@ A full-featured scheduling and booking web application that closely replicates C
 
 | Feature | Details |
 |---|---|
-| **Event Types Management** | Create, edit, delete event types with title, description, duration, slug, color, and buffer times |
+| **Event Types Management** | Create, edit, delete event types with title, description, duration, slug, color |
 | **Availability Settings** | Day-of-week toggles, start/end time pickers, timezone selector |
-| **Public Booking Page** | Calendar view, available time slots, booking form, conflict prevention |
-| **Booking Confirmation** | Dedicated confirmation page with event details and calendar invitations |
-| **Bookings Dashboard** | Tabs for upcoming/past/cancelled, cancel functionality, and stats |
+| **Public Booking Page** | Calendar view, available time slots, booking form, double-booking prevention |
+| **Booking Confirmation** | Dedicated confirmation page with event details |
+| **Bookings Dashboard** | Tabs for upcoming/past/cancelled, cancel functionality, stats |
 | **Unique Public Links** | Every event type gets `/book/{slug}` |
 
 ### Bonus Features
 
-- ✅ **Responsive Design**: Fully optimized for mobile, tablet, and desktop viewports
-- ✅ **Cal.com Aesthetics**: Pixel-perfect replication of Cal.com v6.3 design
-- ✅ **Custom Questions**: Support for arbitrary form fields per event type
-- ✅ **Email Notifications**: Real-time notifications for both bookers and admins (Gmail SMTP)
-- ✅ **Availability Overrides**: Block off specific dates or set custom hours for single days
-- ✅ **Rescheduling**: Built-in support for rescheduling existing bookings
-- ✅ **Conflict Prevention**: Intelligent slot calculation considering existing bookings and buffer times
+- ✅ Responsive design (mobile, tablet, desktop)
+- ✅ Landing page (Cal.com-style marketing page)
+- ✅ Public user profile page (like `cal.com/username`)
+- ✅ Settings & profile management page
+- ✅ Active/inactive toggle per event type
+- ✅ Color-coded event types
+- ✅ Copy booking link to clipboard
+- ✅ Stats dashboard with booking counts
+- ✅ Email notifications (Gmail via Nodemailer)
+- ✅ Custom login / User identification
 
 ---
 
@@ -45,64 +49,38 @@ A full-featured scheduling and booking web application that closely replicates C
 | **Framework** | Next.js 16 (App Router, TypeScript) |
 | **Frontend** | React 19, Vanilla CSS (custom design system) |
 | **Backend** | Next.js API Routes (Route Handlers) |
-| **Database** | MySQL (Connection pooling, auto-schema initialization) |
+| **Database** | SQLite via `better-sqlite3` (embedded, zero-config) |
 | **Email** | Nodemailer (Gmail App Password integration) |
-| **Deployment** | Vercel (Frontend), Railway (MySQL Database) |
+| **Fonts** | Inter (Google Fonts) |
+| **Icons** | Inline SVGs (no external library) |
 
 ---
 
 ## 🗃️ Database Schema
 
-The application uses a relational MySQL schema with the following structure:
+```sql
+-- Default user (pre-seeded, no login required)
+users (id, name, username, email, avatar, timezone, created_at)
 
-### `users`
-Stores user profile information and global settings.
-- `id`: Primary Key (AUTO_INCREMENT)
-- `name`: User's display name
-- `username`: Unique handle used for public profile URLs
-- `email`: Primary contact email
-- `avatar`: URL to profile image
-- `timezone`: Primary timezone for the user
-- `created_at`: Timestamp
+-- Event types with unique slugs for public URLs
+event_types (id, user_id, title, slug, description, duration, location, color, is_active, created_at)
 
-### `event_types`
-Configurable meeting types available for booking.
-- `id`: Primary Key (AUTO_INCREMENT)
-- `user_id`: Reference to owner user
-- `title`: Event name (e.g., "30 Minute Meeting")
-- `slug`: Unique URL segment for booking links
-- `description`: Detailed text shown to bookers
-- `duration`: Meeting length in minutes
-- `location`: Meeting destination (Zoom, Google Meet, In-person, etc.)
-- `color`: Hex color used for UI branding
-- `is_active`: Toggle to enable/disable public booking
-- `buffer_time`: Cool-down period before/after meetings
-- `custom_questions`: JSON field for additional form fields
-- `created_at`: Timestamp
+-- Availability schedule (default working hours)
+availability (id, user_id, name, timezone, is_default, created_at)
 
-### `availability` & `availability_days`
-Hierarchical availability system.
-- `availability`: Container for a named schedule (e.g., "Working Hours")
-- `availability_days`: Per-weekday settings (day, start_time, end_time, enabled)
+-- Per-day settings within an availability schedule
+availability_days (id, availability_id, day_of_week, is_enabled, start_time, end_time)
 
-### `date_overrides`
-Custom availability for specific calendar dates.
-- `id`: Primary Key
-- `date`: Specific calendar date
-- `is_blocked`: Toggle to mark date as completely unavailable
-- `start_time` / `end_time`: Custom hours for that specific date
+-- Individual bookings with conflict prevention
+bookings (id, event_type_id, user_id, booker_name, booker_email, start_time, end_time, status, notes, uid, created_at)
+```
 
-### `bookings`
-Record of scheduled meetings.
-- `id`: Primary Key
-- `uid`: Unique public identifier used for secure confirmation links
-- `event_type_id`: Linked event configuration
-- `booker_name` / `booker_email`: Guest details
-- `start_time` / `end_time`: Scheduled window
-- `status`: Lifecycle state (`upcoming`, `cancelled`, `past`)
-- `answers`: JSON record of custom question responses
-- `rescheduled_from`: UID of previous booking if this was a reschedule
-- `notes`: Additional meeting information
+### Key Design Decisions
+
+- **`uid` on bookings**: A unique random identifier for each booking, used in confirmation URLs (avoids exposing auto-increment IDs)
+- **`availability_days` table**: Stores per-day availability separately, allowing fine-grained control per weekday
+- **`is_active` on event_types**: Soft-disable without deleting — bookers see a 404 for disabled events
+- **SQLite with WAL mode**: Enables concurrent reads, safe for development and single-server production
 
 ---
 
@@ -112,33 +90,34 @@ Record of scheduled meetings.
 
 - Node.js ≥ 18
 - npm ≥ 9
-- A running MySQL instance (Local or Hosted)
 
-### 1. Environment Configuration
-
-Create a `.env.local` file in the root directory:
-
-```env
-# Database Connection
-MYSQL_URL=mysql://user:pass@host:port/database
-
-# Email Configuration (Nodemailer)
-GMAIL_USER=your-email@gmail.com
-GMAIL_PASS=your-16-digit-app-password
-ADMIN_EMAIL=your-admin-email@gmail.com
-```
-
-### 2. Installations & Execution
+### 1. Clone & install
 
 ```bash
-# Install dependencies
+git clone <your-repo-url>
+cd schedulo
 npm install
+```
 
-# Start development server
+### 2. Run in development
+
+```bash
 npm run dev
 ```
 
-The application will automatically perform database migrations and seed default data on the first successful connection.
+The app will be available at **http://localhost:3000**
+
+The SQLite database is auto-created at `data/schedulo.db` on first run, and seeded with:
+- 4 event types (15min, 30min, 1hour, product-demo)
+- Default availability (Mon–Fri 9AM–5PM, America/New_York)
+- 6 sample bookings (3 upcoming, 2 past, 1 cancelled)
+
+### 3. Build for production
+
+```bash
+npm run build
+npm start
+```
 
 ---
 
@@ -147,28 +126,100 @@ The application will automatically perform database migrations and seed default 
 ```
 src/
 ├── app/
-│   ├── page.tsx                    # Landing page (High-fidelity replica)
-│   ├── book/[slug]/                # Public booking flow
-│   ├── [username]/                 # User public profile
-│   └── dashboard/                  # Management interface
-├── api/                            # Backend API Routes
-│   ├── availability/               # Schedule management
-│   ├── bookings/                   # Booking CRUD & Cancellation
-│   ├── event-types/                # Event configuration
-│   └── slots/                      # Intelligent slot availability logic
-├── lib/
-│   ├── db2.ts                      # MySQL connection pool & schema init
-│   └── email.ts                    # Nodemailer transport & templates
-└── components/
-    ├── Sidebar.tsx                 # Responsive navigation
-    └── HomeMockup.tsx              # Animated landing page mockup
+│   ├── page.tsx                    # Landing page
+│   ├── layout.tsx                  # Root layout
+│   ├── globals.css                 # Full design system (Cal.com-style)
+│   ├── alex/
+│   │   └── page.tsx               # Public user profile (/alex)
+│   ├── book/
+│   │   └── [slug]/
+│   │       ├── page.tsx           # Public booking page
+│   │       └── confirm/
+│   │           └── page.tsx       # Booking confirmation
+│   ├── dashboard/
+│   │   ├── layout.tsx             # Dashboard shell with sidebar
+│   │   ├── page.tsx               # Event types management
+│   │   ├── bookings/
+│   │   │   └── page.tsx          # Bookings dashboard
+│   │   ├── availability/
+│   │   │   └── page.tsx          # Availability settings
+│   │   └── settings/
+│   │       └── page.tsx          # Profile & settings
+│   └── api/
+│       ├── event-types/
+│       │   ├── route.ts           # GET all, POST create
+│       │   └── [id]/route.ts     # GET, PUT, DELETE by id
+│       ├── availability/
+│       │   └── route.ts           # GET and PUT availability
+│       ├── bookings/
+│       │   ├── route.ts           # GET all, POST create
+│       │   └── [id]/route.ts     # PATCH status (cancel)
+│       ├── slots/
+│       │   └── route.ts          # GET available time slots
+│       ├── public/
+│       │   └── [slug]/route.ts   # GET event type by slug
+│       └── user/
+│           └── route.ts          # GET current user
+├── components/
+│   ├── Sidebar.tsx               # Nav sidebar with copy-link
+│   └── Toast.tsx                 # Toast notification system
+└── lib/
+    └── db.ts                     # SQLite init, schema, seed data
 ```
 
 ---
 
-## ⚙️ Key Technical Implementations
+## 🎨 UI Design
 
-1. **Conflict Resolution**: The `api/slots` route calculates real-time availability by cross-referencing global availability, weekday settings, date overrides, and existing bookings.
-2. **Serverless Emailing**: All email triggers in API routes are `awaited` to ensure delivery in edge/lambda environments before response termination.
-3. **Mobile Optimization**: Custom CSS system implemented without heavy frameworks to ensure sub-second load times and 100% responsiveness on all mobile viewports.
-4. **Schema Evolution**: The `db2.ts` library implements automatic column-level migrations to ensure database parity during deployment cycles.
+The application closely replicates Cal.com's design language:
+
+- **Color palette**: Clean whites, light gray backgrounds (`#f3f4f6`), near-black text (`#111827`)
+- **Typography**: Inter font — same as Cal.com
+- **Layout**: Fixed sidebar (240px) + scrollable main content
+- **Components**: Cards with color-bar accents, smooth toggle switches, tab navigation, inline time pickers
+- **Public booking page**: Two-panel layout (event info left, calendar right) — identical to Cal.com
+
+---
+
+## 🔌 API Reference
+
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/api/event-types` | List all event types |
+| POST | `/api/event-types` | Create event type |
+| GET | `/api/event-types/:id` | Get event type |
+| PUT | `/api/event-types/:id` | Update event type |
+| DELETE | `/api/event-types/:id` | Delete event type |
+| GET | `/api/availability` | Get availability schedule |
+| PUT | `/api/availability` | Update availability |
+| GET | `/api/bookings` | List all bookings |
+| POST | `/api/bookings` | Create booking (with conflict check) |
+| PATCH | `/api/bookings/:id` | Update booking status |
+| GET | `/api/slots?slug=X&date=YYYY-MM-DD` | Get available slots for a date |
+| GET | `/api/public/:slug` | Get public event type info |
+| GET | `/api/user` | Get current user profile |
+
+---
+
+## ⚙️ Assumptions
+
+1. **Flexible User Identification**: The system allows signing in as a default "Admin" or with a custom email to receive booking notifications.
+2. **Server-side SQLite**: `better-sqlite3` runs synchronously in Node.js API routes. This works great in development and single-instance deployments.
+3. **Timezone display only**: Timezone is stored and displayed but not used to convert UTC slot times yet (slots are local server time).
+4. **Email notifications**: Automatic booking confirmation and admin notification emails are sent using Gmail via Nodemailer.
+5. **Date seeding**: Sample booking dates are seeded relative to the current date at first run.
+
+---
+
+## 📸 Screenshots
+
+| Page | Description |
+|---|---|
+| `/` | Cal.com-style marketing landing page |
+| `/dashboard` | Event types management with stats |
+| `/dashboard/bookings` | Tabbed booking list (upcoming/past/cancelled) |
+| `/dashboard/availability` | Weekly availability with day toggles |
+| `/dashboard/settings` | Profile and preferences |
+| `/alex` | Public user profile showing all event types |
+| `/book/30min` | Public booking page with calendar |
+| `/book/30min/confirm` | Post-booking confirmation screen |
