@@ -14,7 +14,7 @@ export default function LandingPage() {
     <>
       <style>{`
         .root-container {
-          zoom: 1.10;
+          /* removed zoom to fix mobile viewport */
         }
         @media (max-width: 1024px) {
           .mobile-stack { flex-direction: column !important; gap: 32px !important; }
@@ -190,8 +190,10 @@ export default function LandingPage() {
               <div style={{ flex: '1', display: 'flex', flexDirection: 'column' }}>
 
                 {/* Mockup Widget */}
-                <div style={{ background: 'white', borderRadius: '12px', border: '1px solid #e5e7eb', overflow: 'hidden', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)', marginBottom: '24px' }}>
-                  <HomeMockup />
+                <div style={{ background: 'white', borderRadius: '12px', border: '1px solid #e5e7eb', overflowX: 'auto', WebkitOverflowScrolling: 'touch', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)', marginBottom: '24px' }}>
+                  <div style={{ minWidth: '600px' }}>
+                    <HomeMockup />
+                  </div>
                 </div>
 
                 {/* Stars Section aligned to mockup */}
@@ -323,7 +325,7 @@ export default function LandingPage() {
                 <p style={{ fontSize: '14px', color: '#6b7280', lineHeight: 1.5, marginBottom: '40px', minHeight: '63px' }}>
                   We'll handle all the cross-referencing, so you don't have to worry about double bookings.
                 </p>
-                <div style={{ position: 'relative', height: '240px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ position: 'relative', height: '240px', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
                   {/* Orbits - Three layered rings with increased spacing */}
                   <div style={{ position: 'absolute', width: '230px', height: '230px', borderRadius: '50%', border: '1px solid #f3f4f6' }}></div>
                   <div style={{ position: 'absolute', width: '160px', height: '160px', borderRadius: '50%', border: '1px solid #f3f4f6' }}></div>
@@ -418,9 +420,9 @@ export default function LandingPage() {
                   </div>
 
                   {/* Meeting Interface */}
-                  <div style={{ flex: 1, display: 'flex', position: 'relative' }}>
+                  <div style={{ flex: 1, display: 'flex', position: 'relative', minHeight: '180px' }}>
                     {/* User 1 */}
-                    <div style={{ flex: 1, borderRight: '1px solid #f3f4f6', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+                    <div style={{ flex: 1, borderRight: '1px solid #f3f4f6', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}>
                       {/* Pulsing Background Circle */}
                       <div style={{ position: 'absolute', width: '90px', height: '90px', borderRadius: '50%', background: '#e5e7eb', animation: 'fade-bg 2s infinite', zIndex: 0 }}></div>
                       <div style={{ position: 'relative', width: '90px', height: '90px', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1 }}>
@@ -428,7 +430,7 @@ export default function LandingPage() {
                       </div>
                     </div>
                     {/* User 2 */}
-                    <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+                    <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}>
                       {/* Pulsing Background Circle */}
                       <div style={{ position: 'absolute', width: '90px', height: '90px', borderRadius: '50%', background: '#e5e7eb', animation: 'fade-bg 2s infinite', animationDelay: '1s', zIndex: 0 }}></div>
                       <div style={{ position: 'relative', width: '90px', height: '90px', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1 }}>

@@ -159,7 +159,20 @@ export default function BookingPage() {
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', fontFamily: 'Inter, sans-serif', padding: '40px 20px' }}>
-      <div style={{
+      <style>{`
+        .book-container { display: flex; flex-direction: row; transition: max-width 0.3s ease; }
+        .book-sidebar { width: 320px; border-right: 1px solid var(--border); padding: 32px; flex-shrink: 0; display: flex; flexDirection: column; }
+        .book-main { flex: 1; min-width: 400px; padding: 32px; }
+        .book-slots { width: 280px; border-left: 1px solid var(--border); padding: 32px 24px; display: flex; flexDirection: column; }
+        @media (max-width: 768px) {
+          .book-container { flex-direction: column !important; }
+          .book-sidebar { width: 100% !important; border-right: none !important; border-bottom: 1px solid var(--border) !important; padding: 24px !important; }
+          .book-main { min-width: unset !important; width: 100% !important; padding: 24px 16px !important; }
+          .book-slots { width: 100% !important; border-left: none !important; border-top: 1px solid var(--border) !important; padding: 24px 16px !important; }
+          .cal-grid { gap: 4px !important; }
+        }
+      `}</style>
+      <div className="book-container" style={{
         display: 'flex',
         background: 'var(--bg-card)',
         border: '1px solid var(--border)',
@@ -172,7 +185,7 @@ export default function BookingPage() {
       }}>
 
         {/* Col 1: Details */}
-        <div style={{ width: 320, padding: 32, borderRight: '1px solid var(--border)', flexShrink: 0, display: 'flex', flexDirection: 'column' }}>
+        <div className="book-sidebar" style={{ display: 'flex', flexDirection: 'column' }}>
           <div style={{ width: 28, height: 28, borderRadius: '50%', background: '#6366f1', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 600, marginBottom: 12 }}>
             S
           </div>
@@ -198,9 +211,9 @@ export default function BookingPage() {
 
         {/* Main Content Area */}
         {step === 'calendar' ? (
-          <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+          <div style={{ display: 'flex', flex: 1, overflow: 'hidden', flexDirection: 'inherit' }}>
             {/* Col 2: Calendar */}
-            <div style={{ flex: 1, padding: 32, minWidth: 400 }}>
+            <div className="book-main">
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
                 <div style={{ fontSize: 16, fontWeight: 700, color: 'white' }}>{MONTH_NAMES[month]} {year}</div>
                 <div style={{ display: 'flex', gap: 16 }}>
@@ -219,7 +232,7 @@ export default function BookingPage() {
                 ))}
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 8 }}>
+              <div className="cal-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 8 }}>
                 {cells.map((cell, i) => {
                   if (!cell) return <div key={i} />;
                   const isPast = cell < today;
@@ -247,7 +260,7 @@ export default function BookingPage() {
 
             {/* Col 3: Slots */}
             {selectedDate && (
-              <div style={{ width: 280, borderLeft: '1px solid var(--border)', padding: '32px 24px', display: 'flex', flexDirection: 'column' }}>
+              <div className="book-slots" style={{ display: 'flex', flexDirection: 'column' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
                   <div style={{ fontSize: 15, fontWeight: 700, color: 'white' }}>
                     {selectedDate.toLocaleDateString('en-US', { weekday: 'short', day: 'numeric' })}
@@ -290,7 +303,7 @@ export default function BookingPage() {
           </div>
         ) : (
           /* Col 2 Form */
-          <div style={{ flex: 1, padding: '40px 48px', overflowY: 'auto', maxHeight: '80vh' }}>
+          <div className="book-main" style={{ overflowY: 'auto', maxHeight: '80vh' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 32 }}>
               <button
                 className="btn btn-ghost btn-sm"
