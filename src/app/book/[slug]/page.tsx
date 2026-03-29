@@ -43,7 +43,7 @@ export default function BookingPage() {
     const d = new Date(); d.setDate(1); return d;
   });
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [slots, setSlots] = useState<string[]>([]);
+  const [slots, setSlots] = useState<{ time: string; status: 'available' | 'busy' }[]>([]);
   const [loadingSlots, setLoadingSlots] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
 
@@ -277,21 +277,23 @@ export default function BookingPage() {
                 ) : (
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 10, overflowY: 'auto', flex: 1, paddingRight: 4 }}>
                     {slots.map(slot => (
-                      <div key={slot} style={{ display: 'flex', gap: 8 }}>
+                      <div key={slot.time} style={{ display: 'flex', gap: 8 }}>
                         <button
                           style={{
-                            flex: 1, background: selectedSlot === slot ? '#374151' : 'transparent',
-                            color: 'white',
-                            border: `1px solid ${selectedSlot === slot ? 'var(--border)' : 'var(--border)'}`,
-                            borderRadius: 6, padding: '12px', fontSize: 14, fontWeight: 600, cursor: 'pointer',
-                            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, transition: '0.15s'
+                            flex: 1, background: selectedSlot === slot.time ? '#374151' : 'transparent',
+                            color: slot.status === 'busy' ? 'var(--text-muted)' : 'white',
+                            border: `1px solid ${selectedSlot === slot.time ? 'var(--border)' : 'var(--border)'}`,
+                            borderRadius: 6, padding: '12px', fontSize: 14, fontWeight: 600, cursor: slot.status === 'busy' ? 'not-allowed' : 'pointer',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, transition: '0.15s',
+                            opacity: slot.status === 'busy' ? 0.6 : 1
                           }}
-                          onClick={() => setSelectedSlot(slot)}
+                          disabled={slot.status === 'busy'}
+                          onClick={() => setSelectedSlot(slot.time)}
                         >
-                          <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#10b981' }} />
-                          {formatSlot(slot)}
+                          <div style={{ width: 6, height: 6, borderRadius: '50%', background: slot.status === 'busy' ? '#ef4444' : '#10b981' }} />
+                          {formatSlot(slot.time)}
                         </button>
-                        {selectedSlot === slot && (
+                        {selectedSlot === slot.time && (
                           <button className="btn btn-primary" style={{ padding: '0 16px', background: 'white', color: 'black', border: 'none', borderRadius: 6, fontWeight: 600, cursor: 'pointer' }} onClick={() => setStep('form')}>Next</button>
                         )}
                       </div>

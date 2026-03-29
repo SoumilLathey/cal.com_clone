@@ -14,7 +14,7 @@ interface Booking {
   event_slug?: string;
 }
 
-const TABS = ['upcoming', 'unconfirmed', 'recurring', 'past', 'canceled'] as const;
+const TABS = ['upcoming', 'past', 'canceled'] as const;
 type Tab = typeof TABS[number];
 
 function formatDate(iso: string) {
@@ -74,7 +74,7 @@ export default function BookingsPage() {
 
   const now = new Date();
   const filtered = bookings.filter(b => {
-    if (tab === 'upcoming' || tab === 'unconfirmed' || tab === 'recurring') {
+    if (tab === 'upcoming') {
       return b.status === 'upcoming' && new Date(b.start_time) >= now;
     }
     if (tab === 'past') return b.status === 'past' || (b.status === 'upcoming' && new Date(b.start_time) < now);

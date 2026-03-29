@@ -96,10 +96,6 @@ export interface BookingEmailData {
 }
 
 export function buildConfirmationEmail(data: BookingEmailData): string {
-  const start = new Date(data.startTime);
-  const dateStr = start.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
-  const timeStr = start.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
-
   return baseTemplate(`
     <span class="badge badge-green">✓ Booking Confirmed</span>
     <h1>You're scheduled!</h1>
@@ -115,13 +111,6 @@ export function buildConfirmationEmail(data: BookingEmailData): string {
       </div>
       <div class="detail-row">
         <div>
-          <div class="detail-label">Date &amp; Time</div>
-          <div class="detail-value">${timeStr}</div>
-          <div class="detail-sub">${dateStr}</div>
-        </div>
-      </div>
-      <div class="detail-row">
-        <div>
           <div class="detail-label">With</div>
           <div class="detail-value">${data.hostName || 'Admin'}</div>
         </div>
@@ -133,10 +122,6 @@ export function buildConfirmationEmail(data: BookingEmailData): string {
 }
 
 export function buildCancellationEmail(data: BookingEmailData): string {
-  const start = new Date(data.startTime);
-  const dateStr = start.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
-  const timeStr = start.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
-
   return baseTemplate(`
     <span class="badge badge-red">✕ Booking Cancelled</span>
     <h1>Your meeting has been cancelled</h1>
@@ -150,13 +135,6 @@ export function buildCancellationEmail(data: BookingEmailData): string {
           <div class="detail-sub">${data.eventDuration} min · ${data.eventLocation}</div>
         </div>
       </div>
-      <div class="detail-row">
-        <div>
-          <div class="detail-label">Was Scheduled For</div>
-          <div class="detail-value">${timeStr}</div>
-          <div class="detail-sub">${dateStr}</div>
-        </div>
-      </div>
     </div>
 
     <p>If you'd like to reschedule, you can book a new time at any moment.</p>
@@ -164,9 +142,6 @@ export function buildCancellationEmail(data: BookingEmailData): string {
 }
 
 export function buildAdminNotificationEmail(data: BookingEmailData, type: 'confirmation' | 'cancellation'): string {
-  const start = new Date(data.startTime);
-  const dateStr = start.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
-  const timeStr = start.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
   const isCancel = type === 'cancellation';
 
   return baseTemplate(`
@@ -187,13 +162,6 @@ export function buildAdminNotificationEmail(data: BookingEmailData, type: 'confi
           <div class="detail-label">Event</div>
           <div class="detail-value">${data.eventTitle}</div>
           <div class="detail-sub">${data.eventDuration} min · ${data.eventLocation}</div>
-        </div>
-      </div>
-      <div class="detail-row">
-        <div>
-          <div class="detail-label">Date &amp; Time</div>
-          <div class="detail-value">${timeStr}</div>
-          <div class="detail-sub">${dateStr}</div>
         </div>
       </div>
     </div>

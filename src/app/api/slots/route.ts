@@ -85,23 +85,25 @@ export async function GET(req: NextRequest) {
     [windowStart, windowEnd]
   );
 
-  // ── Filter: remove slots that overlap any existing booking (+ its buffer) ──
-  const availableSlots = allSlots.filter(slotStr => {
+  // ── Map: mark slots as available or busy ──
+  const slotsWithStatus = allSlots.map(slotStr => {
     const slotStartMs = toMs(slotStr);
     const slotEndMs = slotStartMs + duration * 60000;
 
-    const blocked = existingBookings.some(booked => {
+    const isBusy = existingBookings.some(booked => {
       const bookedStartMs = toMs(booked.start_time);
       const bookedEndMs = toMs(booked.end_time);
       const bufMs = (Number(booked.buffer_time) || 0) * 60000;
 
-      // NEW slot [slotStart, slotEnd] overlaps existing [bookedStart, bookedEnd + buffer] if:
-      // slotStart < bookedEnd + buffer  AND  slotEnd > bookedStart
+      // NEW slot [slotStart, slotEnd] overlaps existing [bookedStart, bookedEnd + buffer]
       return slotStartMs < (bookedEndMs + bufMs) && slotEndMs > bookedStartMs;
     });
 
-    return !blocked;
+    return {
+      time: slotStr,
+      status: isBusy ? 'busy' : 'available'
+    };
   });
 
-  return NextResponse.json({ slots: availableSlots });
+  return NextResponse.json({ slots: slotsWithStatus });
 }
