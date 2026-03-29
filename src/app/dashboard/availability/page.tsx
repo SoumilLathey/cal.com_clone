@@ -231,7 +231,15 @@ export default function AvailabilityPage() {
                       <div key={ov.id} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 16px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 8 }}>
                         <div style={{ flex: 1 }}>
                           <div style={{ fontWeight: 600, fontSize: 13, color: 'var(--text-primary)' }}>
-                            {new Date(ov.date + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })}
+                            {(() => {
+                              try {
+                                // Ensure date is treated as local date string to avoid TZ issues
+                                const d = typeof ov.date === 'string' ? ov.date.split('T')[0] : ov.date;
+                                return new Date(d + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+                              } catch (e) {
+                                return 'Invalid Date';
+                              }
+                            })()}
                           </div>
                           <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>
                             {ov.is_blocked ? 'Unavailable' : `${formatTime12(ov.start_time)} - ${formatTime12(ov.end_time)}`}
