@@ -70,19 +70,20 @@ export async function GET(req: NextRequest) {
   // We use a wide window (the whole day) to catch all possible overlaps
   // Note: start_time is stored as ISO — may be UTC or local depending on how it was inserted
   // We fetch any booking whose start or end falls on this date in UTC or within ±1 day window
-  const dateStart = new Date(date + 'T00:00:00').getTime();
-  const dateEnd = new Date(date + 'T23:59:59').getTime();
-  // Add 24h buffer to catch timezone edge cases
-  const windowStart = new Date(dateStart - 24 * 3600 * 1000).toISOString();
-  const windowEnd = new Date(dateEnd + 24 * 3600 * 1000).toISOString();
+  const dateStart = new Date(date + 'T00:00:00');
+  const dateEnd = new Date(date + 'T23:59:59');
+  
+  // Format dates for MySQL: 'YYYY-MM-DD HH:MM:SS'
+  const mysqlWindowStart = new Date(dateStart.getTime() - 24 * 3600 * 1000).toISOString().slice(0, 19).replace('T', ' ');
+  const mysqlWindowEnd = new Date(dateEnd.getTime() + 24 * 3600 * 1000).toISOString().slice(0, 19).replace('T', ' ');
 
   const existingBookings = await dbAll<{ start_time: string; end_time: string; buffer_time: number }>(
     `SELECT b.start_time, b.end_time, COALESCE(et.buffer_time, 0) as buffer_time
      FROM bookings b
      JOIN event_types et ON b.event_type_id = et.id
      WHERE b.user_id = 1 AND b.status != 'cancelled'
-     AND b.start_time > ? AND b.start_time < ?`,
-    [windowStart, windowEnd]
+     AND b.start_time >= ? AND b.start_time <= ?`,
+    [mysqlWindowStart, mysqlWindowEnd]
   );
 
   // ── Map: mark slots as available or busy ──
