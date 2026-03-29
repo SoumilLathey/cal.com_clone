@@ -3,7 +3,7 @@
 A high-fidelity, full-stack scheduling platform inspired by Cal.com. Built as part of the SDE Intern Fullstack Assignment.
 
 ## 🚀 Live Demo
-- **URL:** [https://cal-com-clone-gamma.vercel.app/](https://cal-com-clone-gamma.vercel.app/)
+- **URL:** https://calclone21-swart.vercel.app/
 - **GitHub:** [https://github.com/SoumilLathey/cal.com_clone](https://github.com/SoumilLathey/cal.com_clone)
 
 ---
