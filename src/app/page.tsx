@@ -93,6 +93,16 @@ export default function LandingPage() {
           from { transform: translateX(-50%); }
           to { transform: translateX(0); }
         }
+        @keyframes floating-pop {
+          0% { transform: translateY(0) translateX(-50%); }
+          50% { transform: translateY(-5px) translateX(-50%); }
+          100% { transform: translateY(0) translateX(-50%); }
+        }
+        @keyframes floating-right {
+          0% { transform: translateY(0); }
+          50% { transform: translateY(-5px); }
+          100% { transform: translateY(0); }
+        }
       `}</style>
       <div className="root-container" style={{ fontFamily: 'Inter, -apple-system, sans-serif', background: '#f3f4f6', color: '#111827', minHeight: '100vh', padding: '16px 0', display: 'flex', flexDirection: 'column', position: 'relative' }}>
 
@@ -106,33 +116,33 @@ export default function LandingPage() {
           </div>
         </div>
 
+        <nav style={{
+          maxWidth: '1140px', margin: '0 auto 16px', width: 'calc(100% - 32px)',
+          background: 'white', border: '1px solid #e5e7eb', borderRadius: '16px',
+          padding: '12px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          fontSize: '14px', fontWeight: 500, color: '#4b5563',
+          boxShadow: '0 1px 4px rgba(0,0,0,0.05)',
+          position: 'sticky', top: '16px', zIndex: 1000,
+          boxSizing: 'border-box'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', fontWeight: 800, fontSize: '20px', color: '#111827', letterSpacing: '-0.04em' }}>
+              Cal.com
+            </div>
+          </div>
+          <div>
+            <Link href="/dashboard" style={{
+              padding: '8px 16px', background: '#111827', color: 'white',
+              borderRadius: '8px', textDecoration: 'none', fontWeight: 600,
+              display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', letterSpacing: '-0.01em'
+            }}>
+              Go to app
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M9 18l6-6-6-6" /></svg>
+            </Link>
+          </div>
+        </nav>
+
         <div style={{ position: 'relative', zIndex: 1, padding: '0 16px' }}>
-
-          {/* NAV FLOATING CARD */}
-          <nav style={{
-            maxWidth: '1140px', margin: '0 auto 16px', width: '100%',
-            background: 'white', border: '1px solid #e5e7eb', borderRadius: '16px',
-            padding: '12px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-            fontSize: '14px', fontWeight: 500, color: '#4b5563',
-            boxShadow: '0 1px 2px rgba(0,0,0,0.02)'
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', fontWeight: 800, fontSize: '20px', color: '#111827', letterSpacing: '-0.04em' }}>
-                Cal.com
-              </div>
-            </div>
-            <div>
-              <Link href="/dashboard" style={{
-                padding: '8px 16px', background: '#111827', color: 'white',
-                borderRadius: '8px', textDecoration: 'none', fontWeight: 600,
-                display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', letterSpacing: '-0.01em'
-              }}>
-                Go to app
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M9 18l6-6-6-6" /></svg>
-              </Link>
-            </div>
-          </nav>
-
           {/* HERO FLOATING CARD */}
           <div style={{
             maxWidth: '1140px', margin: '0 auto', width: '100%',
@@ -153,11 +163,24 @@ export default function LandingPage() {
                   meetings
                 </h1>
 
-                <p className="mobile-center" style={{ fontSize: '16px', color: '#6b7280', lineHeight: 1.5, marginBottom: '32px', maxWidth: '420px', fontWeight: 400, letterSpacing: '-0.01em' }}>
-                  A fully customizable scheduling software for individuals, businesses taking calls and developers building scheduling platforms where users meet users.
-                </p>
+                <div style={{ position: 'relative', width: 'fit-content' }}>
+                  {/* Floating Popover */}
+                  <div style={{
+                    position: 'absolute', top: '-45px', left: '50%', transform: 'translateX(-50%)',
+                    background: '#111827', color: 'white', padding: '6px 12px', borderRadius: '8px',
+                    fontSize: '12px', fontWeight: 700, whiteSpace: 'nowrap',
+                    animation: 'floating-pop 2s ease-in-out infinite',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)', zIndex: 10
+                  }}>
+                    Click here to open the app
+                    {/* Arrow */}
+                    <div style={{
+                      position: 'absolute', bottom: '-4px', left: '50%', transform: 'translateX(-50%) rotate(45deg)',
+                      width: '8px', height: '8px', background: '#111827'
+                    }}></div>
+                  </div>
 
-                <div style={{ maxWidth: '400px' }}>
+                  <div style={{ maxWidth: '400px' }}>
                   <Link href="/login" style={{
                     display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
                     background: '#111827', color: 'white', padding: '12px', borderRadius: '8px',
@@ -291,13 +314,27 @@ export default function LandingPage() {
               <p style={{ fontSize: '15px', color: '#6b7280', maxWidth: '440px', lineHeight: 1.5, marginBottom: '32px', fontWeight: 500 }}>
                 Effortless scheduling for business and individuals, powerful solutions for fast-growing modern companies.
               </p>
-              <div style={{ display: 'flex', gap: '12px', marginBottom: '80px' }}>
+              <div style={{ display: 'flex', gap: '12px', marginBottom: '80px', position: 'relative' }}>
                 <Link href="/login" style={{
                   display: 'flex', alignItems: 'center', gap: '8px', background: '#111827', color: 'white',
                   padding: '10px 18px', borderRadius: '10px', fontSize: '14px', fontWeight: 600, textDecoration: 'none'
                 }}>
                   Get started <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M9 18l6-6-6-6" /></svg>
                 </Link>
+                {/* Side Popover for bottom Get Started */}
+                <div style={{
+                  position: 'absolute', left: '-10px', top: '-40px',
+                  background: '#111827', color: 'white', padding: '4px 10px', borderRadius: '6px',
+                  fontSize: '11px', fontWeight: 700, whiteSpace: 'nowrap',
+                  animation: 'floating-right 2s ease-in-out infinite',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.1)', zIndex: 10
+                }}>
+                  Click to open app 🚀
+                  <div style={{
+                    position: 'absolute', bottom: '-3px', left: '20px', transform: 'rotate(45deg)',
+                    width: '6px', height: '6px', background: '#111827'
+                  }}></div>
+                </div>
                 <Link href="/login" style={{
                   display: 'flex', alignItems: 'center', gap: '8px', background: 'white', color: '#374151',
                   padding: '10px 18px', borderRadius: '10px', fontSize: '14px', fontWeight: 600, textDecoration: 'none',
