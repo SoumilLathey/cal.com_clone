@@ -43,28 +43,33 @@ export async function POST(req: NextRequest) {
 }
 
 export async function PUT(req: NextRequest) {
-  await initDb();
-  const body = await req.json();
-  const { id, timezone, days, name } = body;
+  try {
+    await initDb();
+    const body = await req.json();
+    const { id, timezone, days, name } = body;
 
-  if (!id) return NextResponse.json({ error: 'ID required' }, { status: 400 });
+    if (!id) return NextResponse.json({ error: 'ID required' }, { status: 400 });
 
-  if (timezone) {
-    await dbRun('UPDATE availability SET timezone = ? WHERE id = ?', [timezone, id]);
-  }
-  if (name) {
-    await dbRun('UPDATE availability SET name = ? WHERE id = ?', [name, id]);
-  }
-
-  if (days && Array.isArray(days)) {
-    for (const day of days) {
-      await dbRun(
-        `UPDATE availability_days SET is_enabled = ?, start_time = ?, end_time = ?
-         WHERE availability_id = ? AND day_of_week = ?`,
-        [day.is_enabled ? 1 : 0, day.start_time, day.end_time, id, day.day_of_week]
-      );
+    if (timezone) {
+      await dbRun('UPDATE availability SET timezone = ? WHERE id = ?', [timezone, id]);
     }
-  }
+    if (name) {
+      await dbRun('UPDATE availability SET name = ? WHERE id = ?', [name, id]);
+    }
 
-  return NextResponse.json({ success: true });
+    if (days && Array.isArray(days)) {
+      for (const day of days) {
+        await dbRun(
+          `UPDATE availability_days SET is_enabled = ?, start_time = ?, end_time = ?
+           WHERE availability_id = ? AND day_of_week = ?`,
+          [day.is_enabled ? 1 : 0, day.start_time, day.end_time, id, day.day_of_week]
+        );
+      }
+    }
+
+    return NextResponse.json({ success: true });
+  } catch (err: any) {
+    console.error('Update availability error:', err);
+    return NextResponse.json({ error: err.message || 'Failed to update' }, { status: 500 });
+  }
 }
