@@ -92,12 +92,37 @@ export async function GET(req: NextRequest) {
     const slotEndMs = slotStartMs + duration * 60000;
 
     const isBusy = existingBookings.some(booked => {
-      const bookedStartMs = toMs(booked.start_time);
-      const bookedEndMs = toMs(booked.end_time);
+      // MySQL might return Date objects or strings.
+      // We need to compare in several "guesses" because we don't know the DB timezone.
+      const rawStart = booked.start_time;
+      const rawEnd = booked.end_time;
       const bufMs = (Number(booked.buffer_time) || 0) * 60000;
 
-      // NEW slot [slotStart, slotEnd] overlaps existing [bookedStart, bookedEnd + buffer]
-      return slotStartMs < (bookedEndMs + bufMs) && slotEndMs > bookedStartMs;
+      const toPossibleMs = (d: any): number[] => {
+        if (d instanceof Date) return [d.getTime()];
+        const s = String(d);
+        const results = [new Date(s).getTime()];
+        if (s.includes(' ')) {
+          // If "YYYY-MM-DD HH:MM:SS", try as T-format (local AND UTC)
+          const tFormat = s.replace(' ', 'T');
+          results.push(new Date(tFormat).getTime());
+          results.push(new Date(tFormat + 'Z').getTime());
+        }
+        return results.filter(n => !isNaN(n));
+      };
+
+      const possibleStarts = toPossibleMs(rawStart);
+      const possibleEnds = toPossibleMs(rawEnd);
+
+      // If any combination of start/end guesses overlaps the slot, call it busy
+      for (const bS of possibleStarts) {
+        for (const bE of possibleEnds) {
+          const bookedStartMs = bS;
+          const bookedEndMs = bE;
+          if (slotStartMs < (bookedEndMs + bufMs) && slotEndMs > bookedStartMs) return true;
+        }
+      }
+      return false;
     });
 
     return {
