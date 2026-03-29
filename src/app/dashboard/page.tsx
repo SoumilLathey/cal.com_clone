@@ -140,15 +140,15 @@ export default function DashboardPage() {
   return (
     <div style={{ color: 'var(--text-color, inherit)' }}>
       <div className="app-heading">
-        <div className="app-heading-inner" style={{ flexWrap: 'wrap', gap: '20px' }}>
+        <div className="app-heading-inner">
           <div>
             <h1 style={{ fontSize: '20px', fontWeight: 700, margin: 0, letterSpacing: '-0.02em', color: 'inherit' }}>Event types</h1>
             <p style={{ color: 'var(--text-muted)', fontSize: '14px', margin: '4px 0 0 0' }}>Configure different events for people to book on your calendar.</p>
           </div>
-          <div className="app-heading-actions" style={{ flexWrap: 'wrap', width: '100%', justifyContent: 'space-between' }}>
-            <div style={{ position: 'relative', display: 'flex', alignItems: 'center', flex: 1, minWidth: '200px' }}>
+          <div className="app-heading-actions">
+            <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
               <svg style={{ position: 'absolute', left: '12px', color: 'var(--text-muted)' }} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8" /><path d="M21 21l-4.3-4.3" /></svg>
-              <input placeholder="Search" style={{ background: 'transparent', border: '1px solid #374151', borderRadius: '6px', padding: '8px 12px 8px 32px', color: 'inherit', fontSize: '14px', width: '100%', outline: 'none' }} />
+              <input placeholder="Search" style={{ background: 'transparent', border: '1px solid #374151', borderRadius: '6px', padding: '8px 12px 8px 32px', color: 'inherit', fontSize: '14px', width: '220px', outline: 'none' }} />
             </div>
             <button onClick={openCreate} style={{ padding: '8px 16px', display: 'flex', gap: '6px', alignItems: 'center', background: 'transparent', color: 'white', borderRadius: '6px', border: '1px solid white', cursor: 'pointer', fontWeight: 600, fontSize: '14px' }}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M12 5v14M5 12h14" /></svg>
@@ -177,10 +177,10 @@ export default function DashboardPage() {
         ) : (
           <div style={{ border: '1px solid #374151', borderRadius: '8px', overflow: 'hidden' }}>
             {events.map((ev, i) => (
-              <div key={ev.id} className="app-list-item" style={{ borderBottom: i === events.length - 1 ? 'none' : '1px solid #374151', flexWrap: 'wrap', gap: '16px' }}>
+              <div key={ev.id} className="app-list-item" style={{ borderBottom: i === events.length - 1 ? 'none' : '1px solid #374151' }}>
                 {/* Left Side */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: 1, minWidth: '200px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <div style={{ fontSize: '14px', fontWeight: 600, color: 'inherit' }}>{ev.title}</div>
                     <div style={{ fontSize: '14px', color: 'var(--text-muted)', fontWeight: 400 }}>/{ev.slug}</div>
                   </div>
@@ -190,7 +190,7 @@ export default function DashboardPage() {
                   </div>
                 </div>
                 {/* Right Side */}
-                <div className="app-list-item-side" style={{ width: '100%', justifyContent: 'space-between', marginTop: '8px' }}>
+                <div className="app-list-item-side">
 
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     {!ev.is_active && <span style={{ fontSize: '14px', color: 'var(--text-muted)' }}>Hidden</span>}

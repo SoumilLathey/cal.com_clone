@@ -9,13 +9,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="app-layout" style={{ minWidth: 0, overflowX: 'hidden' }}>
+    <div className="app-layout">
       {/* Mobile top bar */}
       <div className="mobile-header">
-        <button className="hamburger-btn" onClick={() => setSidebarOpen(true)} aria-label="Open menu" style={{ display: 'flex', flexDirection: 'column', gap: 4, background: 'transparent', border: 'none', cursor: 'pointer', padding: 4 }}>
-          <span style={{ width: 18, height: 2, background: 'var(--text-primary)', borderRadius: 2 }} />
-          <span style={{ width: 18, height: 2, background: 'var(--text-primary)', borderRadius: 2 }} />
-          <span style={{ width: 18, height: 2, background: 'var(--text-primary)', borderRadius: 2 }} />
+        <button className="hamburger-btn" onClick={() => setSidebarOpen(true)} aria-label="Open menu">
+          <span /><span /><span />
         </button>
         <Link href="/" style={{ fontWeight: 900, fontSize: 17, color: 'var(--text-primary)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 7 }}>
           <svg width="22" height="22" viewBox="0 0 28 28" fill="none">
